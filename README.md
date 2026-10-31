@@ -1,174 +1,138 @@
-# Portafolio de Ousman Krubally
+# Portafolio — Ousman Krubally
 
-Portafolio personal de **Ousman Krubally**, desarrollador web (JavaScript, React, Node.js).
-Identidad visual oscura con dorado, rojo y azul, y un emblema de martillo hecho en SVG.
+Página personal de una sola ruta para presentar proyectos reales, el stack en uso y una vía de
+contacto directa. Negro puro, tipografía Inter auto-hospedada y ocre como único acento.
 
-Además del currículum, el sitio incluye tres piezas construidas desde cero:
+**Estado:** sitio estático listo para desplegar, sin backend, sin cookies y sin analítica.
 
-- **El Umbral** — juego narrativo con dos rutas, enigmas y cinco finales.
-- **Huellas** — archivo colectivo de aportaciones con moderación previa y backend propio.
-- **Conocimiento y mapa de ideas** — archivo de lecturas/notas y visualización de las huellas.
+## Stack
 
----
+- **React 19** + **Vite 7**
+- **Tailwind CSS 4** (plugin oficial de Vite)
+- JavaScript moderno, sin router
+- Inter variable auto-hospedada (`src/assets/fonts/inter-latin.woff2`)
+- Despliegue estático en Vercel (`dist/`)
 
-## 1. Requisitos
+Dependencias de runtime: solo `react` y `react-dom`. Tailwind es dependencia de desarrollo.
 
-- **Node.js 20 o superior** (probado con Node 24).
-- **pnpm 11** (el proyecto usa `pnpm`; hay `pnpm-lock.yaml`).
-
-```bash
-node --version
-pnpm --version
-```
-
-## 2. Puesta en marcha
-
-```bash
-pnpm install          # instala React, Vite y el plugin de React
-pnpm dev              # servidor de desarrollo en http://localhost:5173
-```
-
-Compilar y servir el resultado:
-
-```bash
-pnpm build            # genera dist/
-pnpm preview          # sirve dist/ en http://localhost:4173
-```
-
-> `pnpm-workspace.yaml` autoriza explícitamente el único script de instalación que
-> necesita el proyecto (`esbuild`, el binario que usa Vite). Es un ajuste de pnpm 11,
-> no una dependencia adicional.
-
-## 3. Backend de Huellas (opcional pero recomendado)
-
-El sitio funciona **sin backend**: en ese caso Huellas arranca en *modo demostración
-local* (datos de ejemplo etiquetados y envíos guardados solo en el navegador). Para
-publicar aportaciones de verdad hace falta el servidor incluido.
-
-```bash
-cp server/.env.example server/.env     # ajusta ADMIN_TOKEN y los orígenes
-pnpm server                            # API + build estático en http://localhost:8787
-pnpm server:dev                        # igual, con recarga automática (node --watch)
-```
-
-Para que el cliente converse con la API, define `VITE_API_URL` **en tiempo de
-compilación**:
-
-```bash
-cp .env.example .env
-# .env →  VITE_API_URL=http://localhost:8787
-pnpm build
-pnpm server
-```
-
-El servidor sirve `dist/` y la API en el mismo puerto, así que con esta configuración
-basta con abrir `http://localhost:8787`.
-
-### Variables de entorno
-
-| Archivo          | Variable          | Para qué sirve                                                        |
-| ---------------- | ----------------- | --------------------------------------------------------------------- |
-| `.env`           | `VITE_API_URL`    | URL del backend. Vacía = modo demostración.                           |
-| `server/.env`    | `PORT`            | Puerto del servidor (por defecto `8787`).                             |
-| `server/.env`    | `SITE_URL`        | Origen por defecto si no defines `ALLOWED_ORIGINS`.                   |
-| `server/.env`    | `ALLOWED_ORIGINS` | Orígenes permitidos por CORS, separados por comas (sin barra final).  |
-| `server/.env`    | `ADMIN_TOKEN`     | Token de moderación, mínimo 24 caracteres. Sin él, `/api/admin/*` da 503. |
-| `server/.env`    | `DATA_FILE`       | Ruta del JSON de datos (por defecto `server/data/huellas.json`).       |
-
-`server/.env` y `server/data/` están en `.gitignore`: **no se suben al repositorio**.
-
-### API
-
-| Método | Ruta                                   | Quién      | Qué hace                                    |
-| ------ | -------------------------------------- | ---------- | ------------------------------------------- |
-| GET    | `/api/health`                          | público    | Estado del servicio.                        |
-| GET    | `/api/huellas?category=&q=`            | público    | Huellas aprobadas (máx. 200).               |
-| GET    | `/api/huellas/random`                  | público    | Una huella aprobada al azar.                |
-| POST   | `/api/huellas`                         | público    | Envía una huella. Nace **pendiente**.       |
-| POST   | `/api/huellas/:id/report`              | público    | Denuncia con motivo.                        |
-| GET    | `/api/admin/queue`                     | admin      | Pendientes y denunciadas.                   |
-| POST   | `/api/admin/huellas/:id/approve`       | admin      | Publica una huella.                         |
-| POST   | `/api/admin/huellas/:id/reject`        | admin      | Rechaza o retira una huella.                |
-
-Las rutas de administración requieren `Authorization: Bearer <ADMIN_TOKEN>`.
-
-### Moderación y privacidad
-
-- **Nada se publica solo.** Toda aportación nace en estado `pending` y una persona la
-  aprueba desde `/#/admin` (el token se guarda en `sessionStorage`, nunca en el código).
-- **Denuncias:** tres denuncias de personas distintas ocultan la huella
-  automáticamente (`review`) hasta que se revisa. Una misma persona solo cuenta una vez.
-- **Datos mínimos:** no hay cuentas ni correo. La IP **no se almacena ni se registra**;
-  solo se usa un HMAC con una sal aleatoria en memoria para limitar frecuencia.
-- **Límites:** 120 peticiones/minuto por persona, 1 envío cada 45 s, 4 cada 30 min,
-  10 denuncias/hora, cuerpo máximo de 8 KB, `Content-Type` JSON obligatorio.
-- **Validación doble:** las reglas viven en `src/lib/huellas.js` y el servidor las
-  reutiliza (`server/validate.js`). El servidor siempre vuelve a validar.
-- **Cabeceras:** `nosniff`, `Referrer-Policy`, `X-Frame-Options: DENY`, `Permissions-Policy`
-  y una `Content-Security-Policy` estricta, tanto en el HTML como en las respuestas JSON.
-
-## 4. Despliegue
-
-El frontend es estático y usa rutas con `#` (`#/proyectos`), así que funciona en
-cualquier hosting sin reglas de reescritura: Vercel, Netlify, GitHub Pages o un
-servidor propio.
-
-1. Compila con la URL de tu API: `VITE_API_URL=https://api.tudominio.com pnpm build`.
-2. Sube `dist/` a tu hosting.
-3. Ejecuta `node server/index.js` donde tengas Node (VPS, Railway, Fly.io…),
-   con `ADMIN_TOKEN` largo y `ALLOWED_ORIGINS` limitado a tu dominio.
-4. Sirve la API por HTTPS: el navegador bloquea peticiones desde una página HTTPS
-   hacia una API HTTP.
-
-## 5. Editar contenido
-
-Todo el contenido vive en archivos de datos, separado de los componentes:
-
-| Quiero cambiar…              | Archivo                            |
-| ---------------------------- | ---------------------------------- |
-| Datos de contacto y menú     | `src/data/site.js`                 |
-| Proyectos y repos de estudio | `src/data/projects.js`             |
-| Categorías y motivos         | `src/data/categories.js`           |
-| Huellas de demostración      | `src/data/huellas.seed.js`         |
-| Archivo de conocimiento      | `src/data/knowledge.js`            |
-| Textos del juego             | `src/game/story.js` (motor: `engine.js`) |
-| Reglas de validación         | `src/lib/huellas.js`               |
-
-Regla del proyecto: **nada inventado**. Si un dato (por ejemplo un perfil de LinkedIn
-o un CV de desarrollo) no se puede verificar, se deja `null` y la interfaz lo muestra
-como pendiente en lugar de rellenarlo.
-
-## 6. Estructura
+## Estructura
 
 ```
+index.html                 Metadatos, Open Graph, JSON-LD, preload de Inter
+vercel.json                Cabeceras de seguridad y caché
+public/
+  favicon.svg              Emblema del martillo
+  og-image.png             Tarjeta social 1200×630
+  robots.txt
+  404.html                 Página de error estática, sin JavaScript
+  img/                     Retrato y capturas de página completa
 src/
-  App.jsx              rutas, título, scroll y foco
-  router.jsx           router propio por hash (sin dependencias)
-  components/          cabecera, pie, emblema
-  sections/            secciones de la portada (hero, sobre mí, proyectos…)
-  views/               Umbral, Huellas, Conocimiento, Mapa, Normas, Admin, 404
-  game/                historia y motor de El Umbral
-  huellas/             cliente de la API y almacenamiento local
-  lib/                 validación compartida con el servidor
-  data/                contenido editable
-  styles/              CSS por capas y por vista
-  assets/fonts/        Fraunces e Inter auto-hospedadas (woff2, latin)
-server/
-  index.js             API + servidor estático (Node puro, sin dependencias)
-  store.js             almacén JSON con escritura atómica
-  validate.js          reexporta la validación compartida
-public/img/            capturas optimizadas a WebP
+  App.jsx                  Composición de la página
+  main.jsx
+  styles/app.css           Tokens, base, botones, skip-link y vista previa
+  data/site.js             Datos de contacto, navegación, cifras y servicios
+  data/projects.js         Fichas de proyectos y repos de práctica
+  data/stack.js            Tecnologías de la fila de logos
+  icons/Technologies.jsx   Logos SVG monocromos
+  components/              Navbar, tarjeta, panel de cifras, pie, emblema
+  sections/                Hero, Projects, About, Contact
 ```
 
-## 7. Accesibilidad y rendimiento
+## Comandos
 
-- HTML semántico, un solo `h1` por vista, enlace «Saltar al contenido», `aria-*` en
-  menú, formularios y estados, y foco visible en todo lo que se alcanza con `Tab`.
-- Se respeta `prefers-reduced-motion`: animaciones y transiciones a `0s`.
-- Sin analítica, sin cookies de seguimiento y sin peticiones a terceros.
-- Vistas pesadas cargadas bajo demanda; el CSS va dividido por ruta.
+```bash
+pnpm install
+pnpm dev        # http://localhost:5173
+pnpm build      # genera dist/
+pnpm preview    # sirve dist/ en local
+```
 
----
+Requiere Node ≥ 20.19.
 
-© Ousman Krubally. El código de este portafolio es de uso personal; el contenido
-(proyectos, textos y datos) describe trabajo real del autor.
+## Editar contenido
+
+- **Textos y contacto:** `src/data/site.js`.
+- **Proyectos:** `src/data/projects.js`. Cada ficha incluye problema, solución, decisiones,
+  pendientes, enlaces y la captura de vista previa.
+- **Tecnologías:** `src/data/stack.js` y el icono correspondiente en `src/icons/Technologies.jsx`.
+
+No hay contenido inventado: las cifras son 2 proyectos publicados, 4 repositorios de práctica y
+9 tecnologías. El tercer proyecto es **este portafolio**, porque es real y se puede inspeccionar.
+
+### Capturas de las tarjetas
+
+Las tarjetas muestran una captura de **página completa** que se desliza dentro de un marco 16:10 al
+pasar el ratón o al enfocar con el teclado. Al sustituir una captura:
+
+1. Mantén la proporción vertical (las actuales miden 1280 px de ancho).
+2. Actualiza `width`, `height` y `pan` en `src/data/projects.js`.
+3. Calcula `pan` como `-100 × (1 − 0.625 / (alto / ancho))`. Ejemplo: 1280×4483 → `-82%`.
+
+La vista previa de «Este portafolio» es `public/img/portafolio.webp` y se capturó de esta misma
+página a 1280 px de ancho.
+
+### Retrato
+
+`public/img/ousman-avatar.webp` mide **256×256 px**, suficiente para la tarjeta actual pero justo
+para pantallas de alta densidad. Para mejorarlo, sustituye el archivo por una original de al menos
+1000 px (idealmente 1200×1500, proporción 4:5) y actualiza los atributos `width`/`height` de la
+imagen en `src/sections/Hero.jsx`. El CSS ya recorta en 4:5 y aplica blanco y negro con contraste
+alto, así que la foto debe estar bien iluminada y centrada.
+
+## Formulario de contacto
+
+No hay servidor: el formulario valida nombre, correo y mensaje en el navegador y abre el cliente de
+correo con el texto preparado. Nada se envía ni se guarda. También hay un botón para copiar la
+dirección y enlaces directos a correo y GitHub.
+
+## Accesibilidad
+
+- Enlace «Saltar al contenido» funcional con anclas nativas (sin router por hash).
+- Menú móvil: solo existe en el DOM cuando está abierto, bloquea el scroll, aísla `main` con
+  `inert`, atrapa el foco, cierra con Escape y devuelve el foco al botón.
+- Formulario con `label` asociado, `aria-invalid`, errores descritos y foco en el primer campo
+  inválido.
+- Contraste mínimo de texto ≥ 6:1 sobre negro; foco visible azul; `prefers-reduced-motion`
+  desactiva transiciones y el desplazamiento de las capturas.
+- Un solo `h1`, jerarquía de encabezados sin saltos, imágenes con `alt` y enlaces externos con
+  `noopener noreferrer`.
+
+## Rendimiento
+
+Medido con Chrome headless (DevTools Protocol), sin Lighthouse:
+
+| Escenario | FCP | LCP | CLS |
+|---|---|---|---|
+| Móvil 390×844 · CPU 4× · 4G | 824 ms | 824 ms | 0 |
+| Escritorio 1440×900 | 144 ms | 144 ms | 0 |
+
+Peso inicial aproximado (gzip): HTML 1,1 kB · CSS 7,4 kB · JS 78,1 kB · Inter 48,3 kB · retrato
+4 kB. Las capturas de proyectos se cargan en diferido.
+
+## Despliegue en Vercel
+
+1. Importa el repositorio. Vercel detecta Vite; el directorio de salida es `dist`.
+2. `vercel.json` aplica CSP, `X-Content-Type-Options`, `Referrer-Policy`, `X-Frame-Options`,
+   `Permissions-Policy`, HSTS y caché para `assets/` e `img/`.
+3. **Al asignar el dominio definitivo**, completa los metadatos que hoy no pueden ser absolutos:
+   - `og:image` y `twitter:image` → `https://TU-DOMINIO/og-image.png`
+   - añade `og:url` con la URL canónica y un `<link rel="canonical">`
+   - añade `Sitemap:` en `public/robots.txt` y crea `public/sitemap.xml`
+4. Si editas el bloque JSON-LD inline de `index.html`, **recalcula el hash de la CSP**:
+
+```bash
+node -e "const fs=require('fs'),c=require('crypto');const m=fs.readFileSync('index.html','utf8').match(/<script type=\"application\/ld\+json\">([\s\S]*?)<\/script>/);console.log('sha256-'+c.createHash('sha256').update(m[1]).digest('base64'))"
+```
+
+Sustituye el valor `sha256-…` de `script-src` en `vercel.json`. El sitio no está desplegado en
+`portafolio-ousman.vercel.app` (responde 404), por eso no se declara canonical ni `og:url` todavía.
+
+## Verificación realizada
+
+- `pnpm build` sin errores ni avisos.
+- `pnpm audit --prod`: sin vulnerabilidades conocidas.
+- Sin desbordamiento horizontal entre 360 y 1440 px.
+- Las 9 URLs externas (webs y repositorios) responden 200.
+- Formulario vacío: 3 errores visibles, `aria-invalid` y foco en el primer campo.
+- Menú móvil cerrado: 0 enlaces en el DOM; abierto: foco atrapado; Escape devuelve el foco.
+- Capturas y retrato cargan con sus dimensiones reales.

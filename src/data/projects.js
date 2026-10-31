@@ -1,75 +1,66 @@
 /**
  * Proyectos reales y verificables.
- * Cada dato de esta lista procede del repositorio local, del remoto de GitHub
- * o de la web publicada; nada es inventado. Los estados "pendiente" reflejan
- * lo que todavía no está hecho y se muestran con transparencia.
+ * Cada dato procede del repositorio local, del remoto de GitHub o de la web
+ * publicada. Lo que falta se dice; no se inventa.
+ *
+ * `preview.src` apunta a una captura de página completa. La tarjeta la desliza
+ * dentro de un marco 16:10 al pasar el ratón o al enfocar con el teclado.
  */
 
 export const PROJECTS = [
   {
     id: 'mattas-kitchen',
     name: "Matta's Kitchen",
-    featured: true,
     year: '2026',
-    kind: 'Web de negocio · catering y pedidos',
-    status: 'Publicada · migración en curso',
+    kind: 'Web de negocio · catálogo y pedidos',
+    status: 'Publicada · Next.js pendiente',
     summary:
       'Web para un negocio de catering: catálogo de 12 productos con precios en libras, carrito persistente y cierre de pedido por WhatsApp o correo, sin pasarela de pago.',
     problem:
       'Reunir en una sola página el catálogo, los precios y la forma de pedir de un negocio de cocina, sin construir ni contratar una pasarela de pago.',
     solution:
-      'Una aplicación React con catálogo como única fuente de verdad, carrito en el navegador y un resumen de pedido que se envía por WhatsApp o correo.',
-    tech: ['Next.js 16 (App Router)', 'React 19', 'Vite', 'pnpm', 'Vercel'],
-    // Fuente de estos datos: el repositorio ~/mattas-kitchen del autor
-    // (package.json, AGENTS.md y MEMORY.md), no una suposición.
+      'Una aplicación React con el catálogo como única fuente de verdad, carrito en el navegador y un resumen de pedido que se envía por WhatsApp o correo.',
+    tech: ['Next.js 16', 'React 19', 'Vite', 'pnpm', 'Vercel'],
     highlights: [
       'Catálogo centralizado en un único archivo de datos: precios y productos se editan sin tocar los componentes.',
-      'Carrito con persistencia en localStorage, cálculo de totales y feedback inmediato al añadir (sin librerías de estado).',
-      'Pedido conversacional: resumen + WhatsApp/correo, sin integrar medios de pago.',
+      'Carrito con persistencia en localStorage, cálculo de totales y feedback inmediato al añadir, sin librerías de estado.',
+      'Pedido conversacional: resumen + WhatsApp o correo, sin integrar medios de pago.',
       'Fuentes auto-hospedadas, imágenes locales y política de privacidad propia.',
-      'Migración del proyecto de Vite + React Router a Next.js App Router completada en el repositorio.',
+      'Migración de Vite + React Router a Next.js App Router completada en el repositorio.',
     ],
     pending: [
       'La URL pública todavía sirve el build de Vite; la versión Next.js está terminada en el repositorio pero pendiente de desplegar.',
-      'Algunas fotografías de producto son temporales y están marcadas para sustituirse por fotos reales.',
+      'Algunas fotografías de producto son temporales.',
       'La interfaz está en inglés: la traducción sigue sin decidir.',
     ],
     links: [
-      { label: 'Web publicada', href: 'https://mattas-kitchen.vercel.app', external: true },
-      { label: 'Código en GitHub', href: 'https://github.com/ousman08/mattas-kitchen', external: true },
+      { label: 'Web publicada', href: 'https://mattas-kitchen.vercel.app' },
+      { label: 'Código en GitHub', href: 'https://github.com/ousman08/mattas-kitchen' },
     ],
-    images: [
-      {
-        src: 'img/mattas-kitchen-hero.webp',
-        alt: 'Captura del catálogo de Matta’s Kitchen en la web publicada',
-        width: 1000,
-        height: 625,
-      },
-      {
-        src: 'img/mattas-kitchen-mobile.webp',
-        alt: 'Vista móvil de Matta’s Kitchen',
-        width: 340,
-        height: 1221,
-        variant: 'phone',
-      },
-    ],
+    preview: {
+      src: 'img/mattas-kitchen.webp',
+      alt: 'Página completa de Matta’s Kitchen: portada, catálogo y política de privacidad.',
+      width: 1280,
+      height: 2311,
+      pan: '-65%',
+    },
   },
   {
     id: 'website-cafeteria',
     name: 'Website Cafeteria',
     year: '2026',
     kind: 'Landing estática · HTML, CSS y JavaScript',
-    status: 'Publicado',
+    status: 'Publicada',
     summary:
       'Página de cafetería construida sin frameworks: cabecera, banner, categorías y un catálogo de productos con tarjetas.',
     problem:
       'Practicar una web completa de principio a fin —estructura, estilos y comportamiento— sin apoyarse en frameworks.',
     solution:
-      'HTML5 semántico, CSS a mano y JavaScript para la interacción, publicado como sitio estático en Vercel.',
+      'HTML5 semántico, CSS escrito a mano y JavaScript para la interacción, publicado como sitio estático en Vercel.',
     tech: ['HTML5', 'CSS3', 'JavaScript', 'Vercel'],
     highlights: [
       'Cero dependencias: el sitio se sirve como archivos estáticos.',
-      'Composición por secciones reutilizables (cabecera, categorías, catálogo).',
+      'Composición por secciones reutilizables: cabecera, categorías y catálogo.',
       'Publicado con despliegue automático desde GitHub.',
     ],
     pending: [
@@ -77,24 +68,53 @@ export const PROJECTS = [
       'El catálogo está en inglés (menú de ejemplo de cafetería).',
     ],
     links: [
-      { label: 'Web publicada', href: 'https://website-cafeteria-ten.vercel.app', external: true },
-      { label: 'Código en GitHub', href: 'https://github.com/ousman08/WebsiteCafeteria', external: true },
+      { label: 'Web publicada', href: 'https://website-cafeteria-ten.vercel.app' },
+      { label: 'Código en GitHub', href: 'https://github.com/ousman08/WebsiteCafeteria' },
     ],
-    images: [
-      {
-        src: 'img/website-cafeteria-hero.webp',
-        alt: 'Captura de la página Website Cafeteria',
-        width: 1000,
-        height: 625,
-      },
+    preview: {
+      src: 'img/website-cafeteria.webp',
+      alt: 'Página completa de Website Cafeteria: cabecera, categorías y catálogo.',
+      width: 1280,
+      height: 2133,
+      pan: '-62%',
+    },
+  },
+  {
+    id: 'este-portafolio',
+    name: 'Este portafolio',
+    year: '2026',
+    kind: 'Sitio personal · React y Tailwind',
+    status: 'En local · lista para desplegar',
+    summary:
+      'La página que estás viendo: una sola ruta, sin router, sin analítica y sin peticiones a terceros. Todo el peso está en el contenido.',
+    problem:
+      'Tener un portafolio que cargue rápido, funcione con teclado y no dependa de servicios externos ni de una base de datos.',
+    solution:
+      'React 19 y Vite generan una página estática; Tailwind aporta el sistema visual. Las anclas son nativas, la tipografía se auto-hospeda y el formulario valida antes de abrir el correo.',
+    tech: ['React 19', 'Tailwind CSS 4', 'Vite 7', 'Vercel'],
+    highlights: [
+      'Sin router: las anclas nativas eliminan el fallo del enlace «saltar al contenido».',
+      'Menú móvil con foco atrapado, Escape y bloqueo de scroll; invisible para el teclado cuando está cerrado.',
+      'Capturas reales de página completa que se deslizan dentro de cada tarjeta, solo con CSS.',
+      'Inter auto-hospedada y cero peticiones a terceros: sin cookies ni analítica.',
     ],
+    pending: [
+      'Sin repositorio público todavía: el código vive en local.',
+      'Falta asignar el dominio definitivo y completar canonical y Open Graph con URLs absolutas.',
+      'La foto del retrato está a 256 px; falta una original en alta resolución.',
+    ],
+    links: [],
+    preview: {
+      src: 'img/portafolio.webp',
+      alt: 'Página completa de este portafolio.',
+      width: 1280,
+      height: 4471,
+      pan: '-82%',
+    },
   },
 ]
 
-/**
- * Repositorios de aprendizaje: se muestran aparte, sin inflarlos como
- * proyectos de producto. Todos son públicos y verificables.
- */
+/** Repositorios de aprendizaje: se muestran aparte, sin inflarlos como producto. */
 export const LEARNING_REPOS = [
   {
     name: 'jscamp',

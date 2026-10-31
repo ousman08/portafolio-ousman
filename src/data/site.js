@@ -1,37 +1,63 @@
 /**
  * Datos verificables del sitio.
- * Regla: solo información comprobable (GitHub público, web publicada,
- * repositorios locales con remoto verificado). Lo que falta se marca `null`
- * y la interfaz lo indica como "pendiente" en lugar de inventarlo.
+ * Solo información comprobable (GitHub público, webs publicadas, repos
+ * locales con remoto verificado). Lo que falta se omite; no se inventa.
  */
 
 export const SITE = {
   name: 'Ousman Krubally',
-  shortName: 'OUSMAN',
-  role: 'Desarrollador web',
-  stack: ['JavaScript', 'React', 'Node.js'],
-  // Fuente: bio pública de github.com/ousman08
-  sourceBio: 'https://github.com/ousman08',
-
-  contact: {
-    // Correo configurado como identidad git global del autor y usado en sus proyectos.
-    email: 'oman7910@gmail.com',
-    github: 'https://github.com/ousman08',
-    // No se ha localizado un perfil LinkedIn verificable: no se enlaza.
-    linkedin: null,
-    // No existe un CV de desarrollo verificado: se indica como pendiente.
-    resume: null,
-  },
+  role: 'Desarrollador Full Stack',
+  email: 'oman7910@gmail.com',
+  github: 'https://github.com/ousman08',
+  githubHandle: 'github.com/ousman08',
+  availability: 'Disponible para trabajar y colaborar',
+  // Dato real: el repositorio local de Matta's Kitchen ya está migrado a Next.js 16.
+  currently: 'Matta’s Kitchen migrada a Next.js 16, pendiente de desplegar.',
 }
 
-// La navegación crece por fases a medida que cada sección existe de verdad
-// (evita enlaces a contenido que todavía no está construido).
 export const NAV = [
-  { to: '/', label: 'Inicio' },
-  { to: '/#sobre-mi', label: 'Sobre mí' },
-  { to: '/#proyectos', label: 'Proyectos' },
-  { to: '/conocimiento', label: 'Conocimiento' },
-  { to: '/huellas', label: 'Huellas' },
-  { to: '/umbral', label: 'El Umbral', accent: true },
-  { to: '/#contacto', label: 'Contacto' },
+  { href: '#proyectos', label: 'Proyectos' },
+  { href: '#stack', label: 'Stack' },
+  { href: '#sobre-mi', label: 'Sobre mí' },
+  { href: '#contacto', label: 'Contacto' },
+]
+
+/**
+ * Cifras del bloque «En Números».
+ * Todas se pueden comprobar en esta misma página o en GitHub.
+ */
+export const STATS = [
+  { value: '02', label: 'proyectos publicados' },
+  { value: '04', label: 'repositorios de práctica' },
+  { value: '09', label: 'tecnologías en uso' },
+]
+
+export const SERVICES = [
+  {
+    title: 'Webs de negocio',
+    text: 'Landings, catálogos y pedidos por WhatsApp o correo. Sin pasarelas ni piezas que el negocio no necesita.',
+  },
+  {
+    title: 'Front-end a medida',
+    text: 'React, Next.js y Tailwind. Interfaces rápidas, accesibles y fáciles de mantener.',
+  },
+  {
+    title: 'Puesta en marcha',
+    text: 'Build, despliegue y ajustes de rendimiento. Del repositorio al dominio, sin prometer de más.',
+  },
+]
+
+export const PRINCIPLES = [
+  {
+    title: 'Construir antes que prometer',
+    text: 'Prefiero mostrar código y proyectos antes que enumerar capacidades.',
+  },
+  {
+    title: 'Aprender en público',
+    text: 'Repositorios abiertos, aunque el resultado todavía sea imperfecto.',
+  },
+  {
+    title: 'Resolver problemas reales',
+    text: 'Un catálogo, un carrito, un pedido: cosas que alguien usa de verdad.',
+  },
 ]

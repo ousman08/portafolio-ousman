@@ -1,15 +1,12 @@
 # Dependencias y artefactos generados
 node_modules/
 dist/
+.vercel/
 
-# Secretos y configuración local (ver .env.example y server/.env.example)
+# Secretos y configuración local
 .env
 .env.local
 .env.*.local
-server/.env
-
-# Datos de Huellas: se guardan en tiempo de ejecución, no se versionan
-server/data/
 
 # Sistema
 .DS_Store

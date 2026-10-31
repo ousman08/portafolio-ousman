@@ -1,94 +1,117 @@
-import '../styles/hero.css'
-import { Link } from '../router.jsx'
 import { SITE } from '../data/site.js'
 
-const LETTERS = 'OUSMAN'.split('')
+function ArrowDown() {
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 16 16"
+      width="14"
+      height="14"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M8 2.5v11M3.5 9 8 13.5 12.5 9" />
+    </svg>
+  )
+}
 
-/**
- * Portada: nombre, especialidad, mensaje y acceso a las tres acciones clave
- * (proyectos, experiencia interactiva, contacto).
- * Sin contadores ni barras de progreso: solo información verificable.
- */
 export default function Hero() {
   return (
-    <section className="hero" aria-labelledby="hero-title">
-      <span className="hero__slash" aria-hidden="true" />
+    <section
+      id="inicio"
+      aria-labelledby="hero-title"
+      className="relative overflow-hidden border-b border-line"
+    >
+      {/* Halo ocre muy contenido detrás del retrato. */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute -right-32 top-0 hidden h-[34rem] w-[34rem] rounded-full bg-[radial-gradient(circle,rgba(201,162,75,0.16),transparent_65%)] blur-2xl lg:block"
+      />
 
-      <div className="shell hero__grid">
-        <div>
-          <p className="label hero__eyebrow">Portafolio · {new Date().getFullYear()}</p>
+      <div className="shell grid items-center gap-12 py-16 md:py-24 lg:grid-cols-[1.15fr_0.85fr] lg:gap-16">
+        <div className="relative">
+          <p className="label">Portafolio · 2026</p>
 
-          <h1 id="hero-title" className="hero__title" aria-label="Ousman">
-            {LETTERS.map((letter, i) => (
-              <span key={letter} style={{ animationDelay: `${i * 70}ms` }} aria-hidden="true">
-                {letter}
-              </span>
-            ))}
+          <h1
+            id="hero-title"
+            className="mt-5 text-[clamp(2.9rem,9vw,5.6rem)] font-light leading-[0.9] tracking-[-0.045em] text-white"
+          >
+            Ousman
+            <br />
+            <span className="font-semibold">Krubally</span>
           </h1>
 
-          <div className="hero__role">
-            <h2>
-              Desarrollador <em>web</em>
-            </h2>
-            <span className="label label--dim">{SITE.stack.join(' · ')}</span>
-          </div>
-
-          <p className="hero__message">
-            <strong>Construyo, aprendo y resuelvo.</strong> Diseño y programo productos web reales:
-            desde la idea hasta la interfaz que alguien usa cada día.
+          <p className="mt-5 text-base text-white/90 md:text-lg">
+            Desarrollador <span className="font-medium text-ochre">Full Stack</span>
           </p>
 
-          <div className="hero__actions">
-            <Link to="/#proyectos" className="btn btn--gold">
+          <p className="mt-6 max-w-xl text-sm leading-relaxed text-muted md:text-base">
+            Construyo webs de negocio y productos que la gente usa de verdad: catálogos, carritos y
+            pedidos. React, Next.js y Node.js, con el detalle puesto en el rendimiento y la
+            accesibilidad.
+          </p>
+
+          <div className="mt-8 flex flex-wrap items-center gap-3">
+            <a href="#proyectos" className="btn btn-primary">
               Ver proyectos
-            </Link>
-            <Link to="/umbral" className="btn btn--blue">
-              Entrar en El Umbral
-            </Link>
-            <Link to="/#contacto" className="btn btn--outline">
-              Contacto
-            </Link>
+              <ArrowDown />
+            </a>
+            <a href="#contacto" className="btn btn-outline">
+              Hablemos
+            </a>
           </div>
+
+          <p className="mt-7 flex items-center gap-2.5 text-[0.7rem] uppercase tracking-[0.16em] text-muted">
+            <span
+              aria-hidden="true"
+              className="h-2 w-2 animate-pulse rounded-full bg-emerald-400 shadow-[0_0_0_4px_rgba(52,211,153,0.12)]"
+            />
+            {SITE.availability}
+          </p>
         </div>
 
-        {/* Raíl lateral: datos reales, sin métricas inventadas */}
-        <aside className="hero__rail" aria-label="Ficha rápida">
-          <dl>
-            <div className="rail-item">
-              <dt>Enfoque</dt>
-              <dd>Front-end y full-stack con JavaScript</dd>
-            </div>
-            <div className="rail-item">
-              <dt>Proyecto destacado</dt>
-              <dd>
-                <a
-                  href="https://mattas-kitchen.vercel.app"
-                  target="_blank"
-                  rel="noreferrer noopener"
-                >
-                  Matta&rsquo;s Kitchen ↗
-                </a>
-              </dd>
-            </div>
-            <div className="rail-item">
-              <dt>Código</dt>
-              <dd>
-                <a href={SITE.contact.github} target="_blank" rel="noreferrer noopener">
-                  github.com/ousman08 ↗
-                </a>
-              </dd>
-            </div>
-            <div className="rail-item">
-              <dt>Estado</dt>
-              <dd className="hero__status">Abierto a oportunidades y proyectos</dd>
-            </div>
-          </dl>
-        </aside>
-      </div>
+        <div className="relative mx-auto w-full max-w-[22rem] lg:mx-0 lg:ml-auto lg:max-w-[24rem]">
+          <div
+            aria-hidden="true"
+            className="absolute -inset-4 rounded-[2rem] bg-[radial-gradient(circle_at_50%_35%,rgba(201,162,75,0.18),transparent_70%)] blur-xl"
+          />
 
-      <span className="hero__scroll" aria-hidden="true">
-        Desplázate
-      </span>
+          <figure className="relative overflow-hidden rounded-2xl border border-white/15 bg-[#080808]">
+            <img
+              src="img/ousman-avatar.webp"
+              alt="Retrato en blanco y negro de Ousman Krubally"
+              width="256"
+              height="256"
+              fetchPriority="high"
+              decoding="async"
+              className="aspect-[4/5] w-full object-cover object-top grayscale contrast-125 brightness-95"
+            />
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_top,rgba(0,0,0,0.82),transparent_58%)]"
+            />
+            <figcaption className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-4">
+              <div>
+                <p className="font-mono text-[0.55rem] uppercase tracking-[0.22em] text-white/55">
+                  Retrato
+                </p>
+                <p className="mt-1 text-sm font-medium text-white">{SITE.name}</p>
+              </div>
+              <span className="font-mono text-[0.55rem] uppercase tracking-[0.2em] text-white/55 [writing-mode:vertical-rl]">
+                Portafolio · MMXXVI
+              </span>
+            </figcaption>
+          </figure>
+
+          <span
+            aria-hidden="true"
+            className="absolute -left-2 top-6 hidden h-24 w-px bg-gradient-to-b from-transparent via-ochre/60 to-transparent lg:block"
+          />
+        </div>
+      </div>
     </section>
   )
 }

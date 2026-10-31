@@ -1,15 +1,16 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import tailwindcss from '@tailwindcss/vite'
 
 // Ruta base relativa: permite publicar en cualquier hosting estático
 // (Vercel, GitHub Pages, subcarpetas) sin reconfigurar nada.
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react(), tailwindcss()],
   base: './',
   build: {
     target: 'es2019',
     sourcemap: false,
-    // CSS por ruta: el visitante solo descarga los estilos de la vista que abre.
+    // CSS dividido por ruta: el visitante solo descarga los estilos que usa.
     cssCodeSplit: true,
     rollupOptions: {
       output: {

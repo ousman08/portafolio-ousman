@@ -3,27 +3,70 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#07070a" />
-    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content="#000000" />
+    <meta name="robots" content="index, follow" />
 
-    <title>Ousman Krubally — Desarrollador web</title>
+    <title>Ousman Krubally — Desarrollador Full Stack</title>
     <meta
       name="description"
-      content="Portafolio de Ousman Krubally, desarrollador web (JavaScript, React, Node.js). Proyectos reales, archivo de conocimiento y experiencias interactivas."
+      content="Portafolio de Ousman Krubally, desarrollador full stack. Proyectos reales con React, Next.js y Node.js: catálogos, carritos y webs de negocio."
     />
     <meta name="author" content="Ousman Krubally" />
-    <link rel="canonical" href="https://portafolio-ousman.vercel.app/" />
 
-    <!-- Open Graph / Twitter -->
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+    <link
+      rel="preload"
+      href="/src/assets/fonts/inter-latin.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+
+    <!--
+      Open Graph. `og:image` debe ser una URL absoluta al desplegar:
+      cámbialo por https://TU-DOMINIO/og-image.png (ver README).
+    -->
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="es_ES" />
-    <meta property="og:title" content="Ousman Krubally — Desarrollador web" />
+    <meta property="og:site_name" content="Ousman Krubally" />
+    <meta property="og:title" content="Ousman Krubally — Desarrollador Full Stack" />
     <meta
       property="og:description"
-      content="Proyectos reales, experiencia interactiva «El Umbral» y «Huellas», un archivo de conocimiento compartido."
+      content="Proyectos reales con React, Next.js y Node.js. Sin humo: problema, solución y lo que falta."
     />
+    <meta property="og:image" content="./og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Ousman Krubally, desarrollador full stack" />
+
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Ousman Krubally — Desarrollador web" />
+    <meta name="twitter:title" content="Ousman Krubally — Desarrollador Full Stack" />
+    <meta
+      name="twitter:description"
+      content="Proyectos reales con React, Next.js y Node.js. Sin humo: problema, solución y lo que falta."
+    />
+    <meta name="twitter:image" content="./og-image.png" />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Ousman Krubally",
+        "jobTitle": "Desarrollador Full Stack",
+        "description": "Desarrollador full stack especializado en webs de negocio con React, Next.js y Node.js.",
+        "email": "oman7910@gmail.com",
+        "sameAs": ["https://github.com/ousman08"],
+        "knowsAbout": [
+          "JavaScript",
+          "React",
+          "Next.js",
+          "Node.js",
+          "Tailwind CSS",
+          "Accesibilidad web"
+        ]
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>

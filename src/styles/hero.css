@@ -1,0 +1,224 @@
+/* Portada principal: composición asimétrica, tipografía editorial y luz ambiental. */
+
+.hero {
+  position: relative;
+  min-height: calc(100svh - 65px);
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+/* Luz ambiental: dorado arriba-izquierda, azul abajo-derecha.
+   Gradientes estáticos (sin animación) → coste de render nulo. */
+.hero::before,
+.hero::after {
+  content: '';
+  position: absolute;
+  z-index: -2;
+  pointer-events: none;
+}
+
+.hero::before {
+  width: 62vw;
+  height: 62vw;
+  left: -18vw;
+  top: -22vw;
+  background: radial-gradient(circle, rgba(201, 162, 75, 0.16), transparent 62%);
+}
+
+.hero::after {
+  width: 55vw;
+  height: 55vw;
+  right: -16vw;
+  bottom: -20vw;
+  background: radial-gradient(circle, rgba(58, 141, 255, 0.13), transparent 62%);
+}
+
+/* Filo rojo: acento de energía que cruza la composición en diagonal. */
+.hero__slash {
+  position: absolute;
+  z-index: -1;
+  top: -10%;
+  right: 24%;
+  width: 1px;
+  height: 120%;
+  background: linear-gradient(180deg, transparent, rgba(224, 36, 58, 0.75) 35%, rgba(224, 36, 58, 0.05));
+  transform: rotate(18deg);
+  transform-origin: top;
+}
+
+.hero__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.75fr) minmax(0, 0.85fr);
+  gap: clamp(2rem, 5vw, 4.5rem);
+  align-items: end;
+  width: 100%;
+  padding-block: clamp(3rem, 9vh, 6rem);
+}
+
+.hero__eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  margin-bottom: clamp(1.2rem, 3vh, 2rem);
+}
+.hero__eyebrow::after {
+  content: '';
+  height: 1px;
+  flex: 1;
+  max-width: 190px;
+  background: linear-gradient(90deg, var(--gold-dim), transparent);
+}
+
+.hero__title {
+  font-size: var(--step-5);
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  line-height: 0.86;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+/* Cada letra entra por separado (se desactiva con movimiento reducido). */
+.hero__title span {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(0.32em);
+  animation: hero-letter 0.75s var(--ease) forwards;
+}
+
+@keyframes hero-letter {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hero__role {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.4rem 1.1rem;
+  margin-top: clamp(1rem, 3vh, 1.7rem);
+}
+.hero__role h2 {
+  font-size: var(--step-2);
+  font-weight: 500;
+  color: var(--text);
+}
+.hero__role h2 em {
+  font-style: italic;
+  color: var(--gold-bright);
+}
+
+.hero__message {
+  max-width: 46ch;
+  margin-top: clamp(1.1rem, 3vh, 1.8rem);
+  color: var(--text-dim);
+  font-size: var(--step-1);
+  font-weight: 300;
+  line-height: 1.55;
+}
+.hero__message strong {
+  color: var(--text);
+  font-weight: 500;
+}
+
+.hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  margin-top: clamp(1.8rem, 4vh, 2.6rem);
+}
+
+/* --- Raíl derecho: ficha técnica con hairlines --- */
+.hero__rail {
+  border-top: 1px solid var(--gold-dim);
+  padding-top: 1rem;
+  display: grid;
+  gap: 0;
+}
+
+.hero__rail dl {
+  margin: 0;
+}
+
+.hero__rail .rail-item {
+  display: grid;
+  grid-template-columns: 7.5rem 1fr;
+  gap: 0.75rem;
+  padding: 0.85rem 0;
+  border-bottom: 1px solid var(--line);
+  align-items: baseline;
+}
+.hero__rail .rail-item dt {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+.hero__rail .rail-item dd {
+  margin: 0;
+  font-size: var(--step--1);
+  color: var(--text);
+}
+.hero__rail .rail-item dd a {
+  color: var(--blue-bright);
+}
+.hero__rail .rail-item dd a:hover {
+  text-decoration: underline;
+}
+
+.hero__status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.hero__status::before {
+  content: '';
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--gold);
+  box-shadow: 0 0 0 4px rgba(201, 162, 75, 0.14);
+}
+
+.hero__scroll {
+  position: absolute;
+  left: var(--gutter);
+  bottom: 1.4rem;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+.hero__scroll::before {
+  content: '';
+  width: 42px;
+  height: 1px;
+  background: var(--text-faint);
+}
+
+@media (max-width: 900px) {
+  .hero {
+    min-height: auto;
+  }
+  .hero__grid {
+    grid-template-columns: 1fr;
+    align-items: start;
+    gap: 2.5rem;
+    padding-block: clamp(2.5rem, 8vh, 4rem) 4.5rem;
+  }
+  .hero__rail {
+    order: 2;
+  }
+  .hero__scroll {
+    display: none;
+  }
+}

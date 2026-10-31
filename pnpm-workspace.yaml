@@ -1,0 +1,4 @@
+# pnpm 11: se debe autorizar explícitamente el único script de instalación
+# que necesita el proyecto (esbuild, binario que usa Vite).
+allowBuilds:
+  esbuild: true

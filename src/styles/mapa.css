@@ -1,0 +1,177 @@
+/* ============================================================
+   MAPA DE IDEAS — constelación de huellas
+   ============================================================ */
+
+.mapa__header {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(1.5rem, 5vw, 4rem);
+  align-items: end;
+  margin-bottom: 2rem;
+}
+
+.mapa__title {
+  font-size: var(--step-4);
+  margin-top: 0.8rem;
+  line-height: 0.98;
+}
+
+.mapa__intro {
+  color: var(--text-dim);
+  font-weight: 300;
+  font-size: var(--step-1);
+  max-width: 48ch;
+}
+
+.mapa__note {
+  border: 1px solid rgba(201, 162, 75, 0.4);
+  border-left: 3px solid var(--gold);
+  background: rgba(201, 162, 75, 0.06);
+  color: var(--text-dim);
+  padding: 0.9rem 1.1rem;
+  font-size: var(--step--1);
+  margin-bottom: 1.4rem;
+  border-radius: 2px;
+}
+.mapa__note strong {
+  color: var(--gold-bright);
+}
+
+.mapa__filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: 1.5rem;
+}
+.mapa__filters .chip[disabled] {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.mapa__stage {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(0, 0.9fr);
+  gap: 1.5rem;
+  align-items: start;
+}
+
+.mapa__svg {
+  width: 100%;
+  height: auto;
+  display: block;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(58, 141, 255, 0.06), transparent 45%),
+    radial-gradient(circle at 80% 80%, rgba(224, 36, 58, 0.05), transparent 45%),
+    var(--ink-000);
+  overflow: visible;
+}
+
+.mapa__hub-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  pointer-events: none;
+}
+
+.mapa__node {
+  cursor: pointer;
+}
+.mapa__node:focus-visible .mapa__dot {
+  stroke: #fff;
+  stroke-width: 1.5;
+}
+.mapa__dot {
+  transition: opacity 0.2s var(--ease);
+}
+.mapa__node:hover .mapa__dot {
+  opacity: 1;
+}
+
+.mapa__panel {
+  border: 1px solid var(--line);
+  border-top: 2px solid var(--gold);
+  background: linear-gradient(170deg, var(--ink-200), var(--ink-050));
+  padding: 1.4rem;
+  min-height: 220px;
+  border-radius: 2px;
+}
+
+.mapa__panel-text {
+  margin: 0.9rem 0 1rem;
+  font-family: var(--font-display);
+  font-size: var(--step-1);
+  line-height: 1.45;
+  color: var(--text);
+}
+
+.mapa__panel-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.mapa__panel .is-error {
+  color: var(--red-bright);
+}
+
+.mapa__list {
+  margin-top: 1.5rem;
+  border-top: 1px solid var(--line);
+  padding-top: 1rem;
+}
+.mapa__list summary {
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+.mapa__list ul {
+  list-style: none;
+  margin: 1rem 0 0;
+  padding: 0;
+  display: grid;
+  gap: 0.6rem;
+}
+.mapa__list button {
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  padding: 0.8rem 1rem;
+  cursor: pointer;
+  display: grid;
+  gap: 0.25rem;
+  transition: border-color 0.2s var(--ease);
+}
+.mapa__list button:hover {
+  border-color: var(--gold-dim);
+}
+.mapa__list .label {
+  font-size: 0.62rem;
+}
+
+.mapa__footer {
+  margin-top: 1.5rem;
+}
+
+@media (max-width: 900px) {
+  .mapa__header,
+  .mapa__stage {
+    grid-template-columns: 1fr;
+  }
+  .mapa__svg {
+    /* En móvil se reduce la altura para que no domine la pantalla. */
+    max-height: 58vh;
+  }
+  .mapa__panel {
+    min-height: auto;
+  }
+}

@@ -5,7 +5,7 @@ contacto directa. Negro puro, tipografía Inter auto-hospedada y ocre como únic
 
 **Estado:** sitio estático listo para desplegar, sin backend, sin cookies y sin analítica.
 
-**Repositorio:** https://github.com/ousman08/Portafolio-Ousman
+**Repositorio:** https://github.com/ousman08/portafolio-ousman
 
 ## Stack
 

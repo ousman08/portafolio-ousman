@@ -105,7 +105,7 @@ export const PROJECTS = [
     links: [
       {
         label: 'Código en GitHub',
-        href: 'https://github.com/ousman08/Portafolio-Ousman',
+        href: 'https://github.com/ousman08/portafolio-ousman',
       },
     ],
     preview: {

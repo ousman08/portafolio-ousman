@@ -99,11 +99,15 @@ export const PROJECTS = [
       'Inter auto-hospedada y cero peticiones a terceros: sin cookies ni analítica.',
     ],
     pending: [
-      'Sin repositorio público todavía: el código vive en local.',
       'Falta asignar el dominio definitivo y completar canonical y Open Graph con URLs absolutas.',
       'La foto del retrato está a 256 px; falta una original en alta resolución.',
     ],
-    links: [],
+    links: [
+      {
+        label: 'Código en GitHub',
+        href: 'https://github.com/ousman08/Portafolio-Ousman',
+      },
+    ],
     preview: {
       src: 'img/portafolio.webp',
       alt: 'Página completa de este portafolio.',

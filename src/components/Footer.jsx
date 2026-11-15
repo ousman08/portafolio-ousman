@@ -13,7 +13,7 @@ export default function Footer() {
             <Emblem size={26} />
           </span>
           <p className="text-sm text-muted">
-            <span className="text-white">{site.name}</span> · {site.role}
+            <span className="text-fg">{site.name}</span> · {site.role}
           </p>
         </div>
 
@@ -22,19 +22,27 @@ export default function Footer() {
             href={site.github}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-[0.68rem] uppercase tracking-[0.14em] text-muted transition-colors hover:text-white"
+            className="text-[0.68rem] uppercase tracking-[0.14em] text-muted transition-colors hover:text-fg"
           >
             GitHub
           </a>
           <a
             href={`mailto:${site.email}`}
-            className="text-[0.68rem] uppercase tracking-[0.14em] text-muted transition-colors hover:text-white"
+            className="text-[0.68rem] uppercase tracking-[0.14em] text-muted transition-colors hover:text-fg"
           >
             {ui.footerEmail}
           </a>
           <a
+            href={site.whatsapp.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-[0.68rem] uppercase tracking-[0.14em] text-muted transition-colors hover:text-fg"
+          >
+            {ui.footerWhatsapp}
+          </a>
+          <a
             href="#inicio"
-            className="text-[0.68rem] uppercase tracking-[0.14em] text-muted transition-colors hover:text-white"
+            className="text-[0.68rem] uppercase tracking-[0.14em] text-muted transition-colors hover:text-fg"
           >
             {ui.backToTop}
           </a>

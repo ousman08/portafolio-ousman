@@ -32,6 +32,9 @@ export const es = {
     openMenu: 'Abrir menú',
     closeMenu: 'Cerrar menú',
     languageLabel: 'Idioma',
+    themeLabel: 'Tema',
+    themeLight: 'Tema claro',
+    themeDark: 'Tema oscuro',
     talk: 'Hablemos',
 
     // Portada
@@ -89,9 +92,15 @@ export const es = {
     contactTitleAfter: 'algo?',
     contactIntro:
       'Si tienes un negocio que necesita una web, un proyecto que encarrilar o una vacante junior donde encaje, escríbeme. Leo todo y contesto.',
-    directEmail: 'Correo directo',
+    directContact: 'Contacto directo',
     copyEmail: 'Copiar correo',
     copiedEmail: 'Copiado ✓',
+    openWhatsapp: 'Abrir WhatsApp',
+    copyNumber: 'Copiar número',
+    copiedNumber: 'Copiado ✓',
+    sendWhatsapp: 'Enviar por WhatsApp',
+    whatsappMessage: (name, email, message) =>
+      `Hola, soy ${name}${email ? ` (${email})` : ''}. ${message}`,
     formName: 'Nombre',
     formEmail: 'Correo',
     formMessage: 'Mensaje',
@@ -100,13 +109,17 @@ export const es = {
     messagePlaceholder: 'Qué necesitas, para cuándo y con qué presupuesto cuentas.',
     prepareEmail: 'Preparar correo',
     formNote:
-      'Este formulario no envía datos a ningún servidor: abre tu cliente de correo con el mensaje listo para revisar.',
+      'Este formulario no envía datos a ningún servidor: abre tu cliente de correo o WhatsApp con el mensaje listo para revisar.',
     errorName: 'Escribe tu nombre (mínimo 2 caracteres).',
     errorEmail: 'Escribe un correo válido, por ejemplo nombre@dominio.com.',
     errorMessage: 'Cuéntame algo más: al menos 10 caracteres.',
     statusReview: 'Revisa los campos marcados antes de continuar.',
-    statusOpening: 'Abriendo tu cliente de correo con el mensaje preparado…',
+    statusOpening:
+      'Abriendo tu cliente de correo con el mensaje preparado. Si no se abre, usa «Copiar correo» o WhatsApp.',
+    statusWhatsapp: 'Abriendo WhatsApp con el mensaje preparado…',
+    charsLeft: (count) => `Quedan ${count} caracteres`,
     statusCopyFailed: (email) => `No se pudo copiar. El correo es ${email}.`,
+    statusCopyNumberFailed: (number) => `No se pudo copiar. El número es ${number}.`,
     mailSubject: (name) => `Contacto desde el portafolio — ${name}`,
     mailName: 'Nombre:',
     mailEmail: 'Correo:',
@@ -114,6 +127,7 @@ export const es = {
     // Pie
     footerNavAria: 'Enlaces del pie',
     footerEmail: 'Correo',
+    footerWhatsapp: 'WhatsApp',
     backToTop: 'Volver arriba ↑',
     footerNote: (year) => `© ${year} · Sin cookies ni analítica`,
   },

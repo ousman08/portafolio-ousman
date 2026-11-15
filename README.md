@@ -36,7 +36,8 @@ src/
   data/projects.js         Fichas de proyectos y repos de práctica
   data/stack.js            Tecnologías de la fila de logos
   icons/Technologies.jsx   Logos SVG monocromos
-  components/              Navbar, tarjeta, panel de cifras, pie, emblema
+  components/              Navbar, tarjeta, panel de cifras, pie, emblema, selectores
+  theme/useTheme.js        Tema claro/oscuro: aplicación, persistencia y aviso
   sections/                Hero, Projects, About, Contact
 ```
 
@@ -83,9 +84,11 @@ alto, así que la foto debe estar bien iluminada y centrada.
 
 ## Formulario de contacto
 
-No hay servidor: el formulario valida nombre, correo y mensaje en el navegador y abre el cliente de
-correo con el texto preparado. Nada se envía ni se guarda. También hay un botón para copiar la
-dirección y enlaces directos a correo y GitHub.
+No hay servidor: el formulario valida nombre, correo y mensaje en el navegador y prepara el mensaje
+en dos canales. El correo abre el cliente de correo con el texto listo; WhatsApp usa un enlace
+`wa.me` (sin API ni coste) con el mismo texto. En la vía de WhatsApp el correo es opcional. Nada se
+envía ni se guarda. También hay botones para copiar el correo y el número, y enlaces directos a
+correo, WhatsApp y GitHub.
 
 ## Accesibilidad
 
@@ -94,8 +97,11 @@ dirección y enlaces directos a correo y GitHub.
   `inert`, atrapa el foco, cierra con Escape y devuelve el foco al botón.
 - Formulario con `label` asociado, `aria-invalid`, errores descritos y foco en el primer campo
   inválido.
-- Contraste mínimo de texto ≥ 6:1 sobre negro; foco visible azul; `prefers-reduced-motion`
-  desactiva transiciones y el desplazamiento de las capturas.
+- Tema claro y oscuro con selector junto al idioma; la elección se guarda en `localStorage`
+  (`portafolio-theme`), nunca en cookies, y el documento se abre con el tema guardado.
+- Contraste de texto verificado en los dos temas (≥ 4,5:1 en texto normal y ≥ 3:1 en texto
+  grande); foco visible; `prefers-reduced-motion` desactiva transiciones y el desplazamiento de
+  las capturas.
 - Un solo `h1`, jerarquía de encabezados sin saltos, imágenes con `alt` y enlaces externos con
   `noopener noreferrer`.
 

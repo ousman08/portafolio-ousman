@@ -20,10 +20,10 @@ export default function StackRow() {
           <ul className="flex items-center gap-7 overflow-x-auto pb-1 [scrollbar-width:none] xl:w-full xl:justify-between xl:gap-4 xl:overflow-visible xl:pb-0 [&::-webkit-scrollbar]:hidden">
             {STACK.map((tech) => (
               <li key={tech.id} className="flex flex-none items-center gap-2.5">
-                <span className="text-white/90">
+                <span className="text-fg/90">
                   <TechnologyIcon id={tech.id} />
                 </span>
-                <span className="whitespace-nowrap text-[0.68rem] font-medium uppercase tracking-[0.12em] text-neutral-300">
+                <span className="whitespace-nowrap text-[0.68rem] font-medium uppercase tracking-[0.12em] text-soft">
                   {tech.name}
                 </span>
               </li>

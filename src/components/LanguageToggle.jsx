@@ -22,7 +22,7 @@ export default function LanguageToggle({ className = '' }) {
       {OPTIONS.map((option, index) => (
         <span key={option.code} className="flex items-center gap-1">
           {index > 0 && (
-            <span aria-hidden="true" className="text-white/25">
+            <span aria-hidden="true" className="text-fg/25">
               /
             </span>
           )}
@@ -32,7 +32,7 @@ export default function LanguageToggle({ className = '' }) {
             aria-pressed={lang === option.code}
             aria-label={option.label}
             className={`inline-flex min-h-6 min-w-6 items-center justify-center rounded-sm px-1 py-1 transition-colors ${
-              lang === option.code ? 'text-ochre' : 'text-muted hover:text-white'
+              lang === option.code ? 'text-ochre' : 'text-muted hover:text-fg'
             }`}
           >
             {option.short}

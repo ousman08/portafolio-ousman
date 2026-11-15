@@ -8,6 +8,12 @@ export const SITE = {
   name: 'Ousman Krubally',
   role: 'Desarrollador Full Stack',
   email: 'oman7910@gmail.com',
+  // Enlace público de WhatsApp (deep link, sin API ni coste).
+  whatsapp: {
+    number: '34632548507',
+    display: '+34 632 54 85 07',
+    href: 'https://wa.me/34632548507',
+  },
   github: 'https://github.com/ousman08',
   githubHandle: 'github.com/ousman08',
   availability: 'Disponible para trabajar y colaborar',

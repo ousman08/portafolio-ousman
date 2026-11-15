@@ -12,7 +12,7 @@ export default function Projects() {
             <p className="label">{ui.projectsLabel}</p>
             <h2
               id="proyectos-title"
-              className="mt-4 max-w-2xl text-3xl font-semibold leading-[1.05] tracking-tight text-white md:text-5xl"
+              className="mt-4 max-w-2xl text-3xl font-semibold leading-[1.05] tracking-tight text-fg md:text-5xl"
             >
               {ui.projectsTitleBefore}
               <br />
@@ -30,9 +30,9 @@ export default function Projects() {
           ))}
         </div>
 
-        <div className="mt-14 rounded-2xl border border-line bg-[#050505] p-6 md:p-8">
+        <div className="mt-14 rounded-2xl border border-line bg-surface p-6 md:p-8">
           <div className="flex flex-col gap-3 md:flex-row md:items-baseline md:justify-between">
-            <h3 className="text-sm font-semibold uppercase tracking-[0.16em] text-white">
+            <h3 className="text-sm font-semibold uppercase tracking-[0.16em] text-fg">
               {ui.practiceTitle}
             </h3>
             <p className="text-[0.7rem] text-faint">{ui.practiceNote}</p>
@@ -48,7 +48,7 @@ export default function Projects() {
                   className="group flex flex-col gap-1 border-b border-line py-3 transition-colors"
                 >
                   <span className="flex items-baseline justify-between gap-4">
-                    <span className="text-sm text-neutral-300 transition-colors group-hover:text-white">
+                    <span className="text-sm text-soft transition-colors group-hover:text-fg">
                       {repo.name}
                     </span>
                     <span className="flex-none font-mono text-[0.56rem] uppercase tracking-[0.14em] text-faint">

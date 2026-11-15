@@ -28,7 +28,44 @@
   --color-muted: #a3a3a3;
   --color-faint: #8a8a8a;
   --color-line: rgba(255, 255, 255, 0.1);
+
+  /* Colores semánticos: cambian con el tema (ver `[data-theme]` abajo). */
+  --color-bg: #000;
+  --color-surface: #050505;
+  --color-surface-2: #0b0b0b;
+  --color-fg: #fff;
+  --color-soft: #d4d4d4;
+  --color-line-strong: rgba(255, 255, 255, 0.16);
+  --color-on-ochre: #0a0a0a;
+  --color-focus: #6fb4ff;
 }
+
+/* ============================================================
+   TEMAS
+   Oscuro por defecto (la identidad del sitio). El claro se activa
+   con `data-theme="light"` en <html> desde el selector de tema.
+   Solo se redefinen variables: ninguna clase cambia.
+   ============================================================ */
+
+:root[data-theme='light'] {
+  --color-ochre: #8a6420;
+  --color-ochre-bright: #6b4d16;
+  --color-muted: #52525b;
+  --color-faint: #5f6672;
+  --color-line: rgba(15, 15, 15, 0.12);
+
+  --color-bg: #fff;
+  --color-surface: #f7f6f3;
+  --color-surface-2: #edece8;
+  --color-fg: #0f0f0f;
+  --color-soft: #3f3f46;
+  --color-line-strong: rgba(15, 15, 15, 0.2);
+  --color-on-ochre: #fff;
+  --color-focus: #0b5cad;
+
+  color-scheme: light;
+}
+
 
 /* ============================================================
    BASE
@@ -37,6 +74,7 @@
 @layer base {
   html {
     color-scheme: dark;
+    background: var(--color-bg);
     scroll-behavior: smooth;
     scroll-padding-top: 5rem;
     -webkit-text-size-adjust: 100%;
@@ -44,8 +82,8 @@
 
   body {
     margin: 0;
-    background: #000;
-    color: #fff;
+    background: var(--color-bg);
+    color: var(--color-fg);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
@@ -73,18 +111,18 @@
 
   ::selection {
     background: var(--color-ochre);
-    color: #0a0a0a;
+    color: var(--color-on-ochre);
   }
 
   :focus-visible {
-    outline: 2px solid #6fb4ff;
+    outline: 2px solid var(--color-focus);
     outline-offset: 3px;
     border-radius: 2px;
   }
 
   * {
     scrollbar-width: thin;
-    scrollbar-color: #2a2a2a transparent;
+    scrollbar-color: var(--color-line-strong) transparent;
   }
 }
 
@@ -137,7 +175,7 @@
 
   .btn-primary {
     background: var(--color-ochre);
-    color: #0a0a0a;
+    color: var(--color-on-ochre);
   }
 
   .btn-primary:hover {
@@ -145,8 +183,8 @@
   }
 
   .btn-outline {
-    border-color: rgba(255, 255, 255, 0.16);
-    color: #fff;
+    border-color: var(--color-line-strong);
+    color: var(--color-fg);
   }
 
   .btn-outline:hover {
@@ -162,7 +200,7 @@
     transform: translateY(-250%);
     border-radius: 0.5rem;
     background: var(--color-ochre);
-    color: #0a0a0a;
+    color: var(--color-on-ochre);
     padding: 0.7rem 1.1rem;
     font-size: 0.8rem;
     font-weight: 600;

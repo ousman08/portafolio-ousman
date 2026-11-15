@@ -9,6 +9,11 @@ const SITE = {
   name: 'Ousman Krubally',
   role: 'Full Stack Developer',
   email: 'oman7910@gmail.com',
+  whatsapp: {
+    number: '34632548507',
+    display: '+34 632 54 85 07',
+    href: 'https://wa.me/34632548507',
+  },
   github: 'https://github.com/ousman08',
   githubHandle: 'github.com/ousman08',
   availability: 'Available to work and collaborate',
@@ -219,6 +224,9 @@ export const en = {
     openMenu: 'Open menu',
     closeMenu: 'Close menu',
     languageLabel: 'Language',
+    themeLabel: 'Theme',
+    themeLight: 'Light theme',
+    themeDark: 'Dark theme',
     talk: 'Let’s talk',
 
     // Hero
@@ -276,9 +284,15 @@ export const en = {
     contactTitleAfter: 'something?',
     contactIntro:
       'If you have a business that needs a website, a project to get on track or a junior role where I fit, write to me. I read everything and reply.',
-    directEmail: 'Direct email',
+    directContact: 'Direct contact',
     copyEmail: 'Copy email',
     copiedEmail: 'Copied ✓',
+    openWhatsapp: 'Open WhatsApp',
+    copyNumber: 'Copy number',
+    copiedNumber: 'Copied ✓',
+    sendWhatsapp: 'Send via WhatsApp',
+    whatsappMessage: (name, email, message) =>
+      `Hi, I'm ${name}${email ? ` (${email})` : ''}. ${message}`,
     formName: 'Name',
     formEmail: 'Email',
     formMessage: 'Message',
@@ -287,13 +301,17 @@ export const en = {
     messagePlaceholder: 'What you need, by when, and what budget you have.',
     prepareEmail: 'Prepare email',
     formNote:
-      'This form does not send data to any server: it opens your email client with the message ready to review.',
+      'This form does not send data to any server: it opens your email client or WhatsApp with the message ready to review.',
     errorName: 'Enter your name (at least 2 characters).',
     errorEmail: 'Enter a valid email, for example name@domain.com.',
     errorMessage: 'Tell me a bit more: at least 10 characters.',
     statusReview: 'Check the highlighted fields before continuing.',
-    statusOpening: 'Opening your email client with the message ready…',
+    statusOpening:
+      'Opening your email client with the message ready. If nothing happens, use “Copy email” or WhatsApp.',
+    statusWhatsapp: 'Opening WhatsApp with the message ready…',
+    charsLeft: (count) => `${count} characters left`,
     statusCopyFailed: (email) => `Could not copy. The email is ${email}.`,
+    statusCopyNumberFailed: (number) => `Could not copy. The number is ${number}.`,
     mailSubject: (name) => `Contact from the portfolio — ${name}`,
     mailName: 'Name:',
     mailEmail: 'Email:',
@@ -301,6 +319,7 @@ export const en = {
     // Footer
     footerNavAria: 'Footer links',
     footerEmail: 'Email',
+    footerWhatsapp: 'WhatsApp',
     backToTop: 'Back to top ↑',
     footerNote: (year) => `© ${year} · No cookies or analytics`,
   },

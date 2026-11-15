@@ -15,13 +15,13 @@ export default function About() {
           <p className="label">{ui.aboutLabel}</p>
           <h2
             id="sobre-mi-title"
-            className="mt-4 max-w-2xl text-3xl font-semibold leading-[1.05] tracking-tight text-white md:text-5xl"
+            className="mt-4 max-w-2xl text-3xl font-semibold leading-[1.05] tracking-tight text-fg md:text-5xl"
           >
             {ui.aboutTitle}
           </h2>
 
           <div className="mt-8 max-w-2xl space-y-5 text-sm leading-relaxed text-muted md:text-base">
-            <p className="text-base text-white md:text-lg">{ui.aboutLead}</p>
+            <p className="text-base text-fg md:text-lg">{ui.aboutLead}</p>
             <p>{ui.aboutBodyOne}</p>
             <p>{ui.aboutBodyTwo}</p>
           </div>
@@ -33,7 +33,7 @@ export default function About() {
                   0{index + 1}
                 </span>
                 <div>
-                  <h3 className="text-sm font-semibold text-white">{principle.title}</h3>
+                  <h3 className="text-sm font-semibold text-fg">{principle.title}</h3>
                   <p className="mt-1 text-sm leading-relaxed text-muted">{principle.text}</p>
                 </div>
               </li>
@@ -42,7 +42,7 @@ export default function About() {
 
           <div className="mt-14 border-t border-line pt-12">
             <p className="label">{ui.servicesLabel}</p>
-            <h3 className="mt-4 max-w-xl text-2xl font-semibold leading-tight tracking-tight text-white md:text-3xl">
+            <h3 className="mt-4 max-w-xl text-2xl font-semibold leading-tight tracking-tight text-fg md:text-3xl">
               {ui.servicesTitle}
             </h3>
             <p className="mt-3 max-w-xl text-sm leading-relaxed text-muted">{ui.servicesIntro}</p>
@@ -54,7 +54,7 @@ export default function About() {
                     0{index + 1}
                   </span>
                   <div>
-                    <h4 className="text-base font-semibold text-white">{service.title}</h4>
+                    <h4 className="text-base font-semibold text-fg">{service.title}</h4>
                     <p className="mt-1.5 text-sm leading-relaxed text-muted">{service.text}</p>
                   </div>
                 </li>
@@ -67,13 +67,13 @@ export default function About() {
               href={site.github}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-[0.7rem] font-semibold uppercase tracking-[0.14em] text-white underline decoration-ochre/60 decoration-1 underline-offset-4 transition-colors hover:text-ochre"
+              className="text-[0.7rem] font-semibold uppercase tracking-[0.14em] text-fg underline decoration-ochre/60 decoration-1 underline-offset-4 transition-colors hover:text-ochre"
             >
               {ui.githubProfile}
             </a>
             <a
               href={`mailto:${site.email}`}
-              className="text-[0.7rem] font-semibold uppercase tracking-[0.14em] text-muted transition-colors hover:text-white"
+              className="text-[0.7rem] font-semibold uppercase tracking-[0.14em] text-muted transition-colors hover:text-fg"
             >
               {site.email}
             </a>

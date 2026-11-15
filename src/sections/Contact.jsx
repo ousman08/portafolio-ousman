@@ -3,16 +3,26 @@ import { useI18n } from '../i18n/LanguageProvider.jsx'
 
 const EMPTY_FORM = { name: '', email: '', message: '' }
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/
+// El mensaje viaja dentro de la URL de WhatsApp: un texto sin límite puede
+// hacer que el enlace supere lo que aceptan el navegador o la app.
+const MESSAGE_MAX = 500
 
-function validate(values, ui) {
+/**
+ * Valida en el navegador. El correo es obligatorio para la vía email y
+ * opcional para WhatsApp (si se escribe, tiene que ser válido).
+ */
+function validate(values, ui, { requireEmail = true } = {}) {
   const errors = {}
 
   if (values.name.trim().length < 2) {
     errors.name = ui.errorName
   }
 
-  if (!EMAIL_PATTERN.test(values.email.trim())) {
-    errors.email = ui.errorEmail
+  const email = values.email.trim()
+  if (requireEmail || email.length > 0) {
+    if (!EMAIL_PATTERN.test(email)) {
+      errors.email = ui.errorEmail
+    }
   }
 
   if (values.message.trim().length < 10) {
@@ -23,7 +33,8 @@ function validate(values, ui) {
 }
 
 /**
- * Contacto sin backend: valida en el navegador y prepara un correo real.
+ * Contacto sin backend: valida en el navegador y prepara un mensaje real.
+ * El correo abre el cliente de correo y WhatsApp usa un deep link wa.me.
  * Nada se envía a un servidor ni se guarda.
  */
 export default function Contact() {
@@ -32,14 +43,24 @@ export default function Contact() {
   const [errors, setErrors] = useState({})
   const [status, setStatus] = useState('')
   const [copied, setCopied] = useState(false)
+  const [copiedNumber, setCopiedNumber] = useState(false)
   const copyTimer = useRef(null)
+  const numberTimer = useRef(null)
 
-  useEffect(() => () => clearTimeout(copyTimer.current), [])
+  useEffect(
+    () => () => {
+      clearTimeout(copyTimer.current)
+      clearTimeout(numberTimer.current)
+    },
+    [],
+  )
 
   // Los mensajes ya mostrados no deben quedarse en el idioma anterior.
   useEffect(() => {
     setErrors({})
     setStatus('')
+    setCopied(false)
+    setCopiedNumber(false)
   }, [lang])
 
   function handleChange(event) {
@@ -54,17 +75,20 @@ export default function Contact() {
     setStatus('')
   }
 
+  function focusFirstError(nextErrors) {
+    const firstError = Object.keys(nextErrors)[0]
+    if (!firstError) return false
+    document.getElementById(`contacto-${firstError}`)?.focus()
+    setStatus(ui.statusReview)
+    return true
+  }
+
   function handleSubmit(event) {
     event.preventDefault()
     const nextErrors = validate(values, ui)
     setErrors(nextErrors)
 
-    const firstError = Object.keys(nextErrors)[0]
-    if (firstError) {
-      document.getElementById(`contacto-${firstError}`)?.focus()
-      setStatus(ui.statusReview)
-      return
-    }
+    if (focusFirstError(nextErrors)) return
 
     const subject = ui.mailSubject(values.name.trim())
     const body = [
@@ -78,6 +102,23 @@ export default function Contact() {
     window.location.href = `mailto:${site.email}?subject=${encodeURIComponent(
       subject,
     )}&body=${encodeURIComponent(body)}`
+  }
+
+  /** Preparar el mismo mensaje en WhatsApp: sin backend, solo un deep link. */
+  function handleWhatsapp() {
+    const email = values.email.trim()
+    const nextErrors = validate(values, ui, { requireEmail: false })
+    setErrors(nextErrors)
+
+    if (focusFirstError(nextErrors)) return
+
+    const text = ui.whatsappMessage(values.name.trim(), email, values.message.trim())
+    setStatus(ui.statusWhatsapp)
+    window.open(
+      `${site.whatsapp.href}?text=${encodeURIComponent(text)}`,
+      '_blank',
+      'noopener,noreferrer',
+    )
   }
 
   async function copyEmail() {
@@ -94,8 +135,22 @@ export default function Contact() {
     copyTimer.current = setTimeout(() => setCopied(false), 2500)
   }
 
+  async function copyNumber() {
+    try {
+      await navigator.clipboard.writeText(site.whatsapp.display)
+      setCopiedNumber(true)
+    } catch {
+      setCopiedNumber(false)
+      setStatus(ui.statusCopyNumberFailed(site.whatsapp.display))
+      return
+    }
+
+    clearTimeout(numberTimer.current)
+    numberTimer.current = setTimeout(() => setCopiedNumber(false), 2500)
+  }
+
   const fieldClass =
-    'w-full rounded-lg border border-line bg-white/[0.02] px-4 py-3 text-sm text-white placeholder:text-faint transition-colors focus:border-ochre/70 focus:outline-none'
+    'w-full rounded-lg border border-line bg-fg/[0.02] px-4 py-3 text-sm text-fg placeholder:text-faint transition-colors focus:border-ochre/70 focus:outline-none'
 
   return (
     <section
@@ -108,7 +163,7 @@ export default function Contact() {
           <p className="label">{ui.contactLabel}</p>
           <h2
             id="contacto-title"
-            className="mt-4 text-3xl font-semibold leading-[1.05] tracking-tight text-white md:text-5xl"
+            className="mt-4 text-3xl font-semibold leading-[1.05] tracking-tight text-fg md:text-5xl"
           >
             {ui.contactTitleBefore}
             <br />
@@ -127,29 +182,53 @@ export default function Contact() {
             {site.availability}
           </p>
 
-          <div className="mt-8 rounded-2xl border border-line bg-[#050505] p-5">
+          <div className="mt-8 rounded-2xl border border-line bg-surface p-5">
             <p className="font-mono text-[0.56rem] uppercase tracking-[0.2em] text-faint">
-              {ui.directEmail}
+              {ui.directContact}
             </p>
             <a
               href={`mailto:${site.email}`}
-              className="mt-2 block break-all text-lg font-medium text-white transition-colors hover:text-ochre"
+              className="mt-2 block break-all text-lg font-medium text-fg transition-colors hover:text-ochre"
             >
               {site.email}
             </a>
-            <div className="mt-4 flex flex-wrap items-center gap-3">
+            <a
+              href={site.whatsapp.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-1.5 block text-sm font-medium tabular-nums text-soft transition-colors hover:text-ochre"
+            >
+              {site.whatsapp.display}
+            </a>
+            <div className="mt-4 grid grid-cols-2 gap-3 sm:flex sm:flex-wrap sm:items-center">
+              <a
+                href={site.whatsapp.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex min-h-11 items-center justify-center gap-1.5 rounded-full border border-line px-3.5 py-2 text-[0.62rem] font-semibold uppercase tracking-[0.14em] text-soft transition-colors hover:border-ochre/60 hover:text-ochre"
+              >
+                {ui.openWhatsapp}
+                <span aria-hidden="true">↗</span>
+              </a>
               <button
                 type="button"
                 onClick={copyEmail}
-                className="min-h-11 rounded-full border border-line px-3.5 py-2 text-[0.62rem] font-semibold uppercase tracking-[0.14em] text-neutral-300 transition-colors hover:border-ochre/60 hover:text-ochre"
+                className="min-h-11 rounded-full border border-line px-3.5 py-2 text-[0.62rem] font-semibold uppercase tracking-[0.14em] text-soft transition-colors hover:border-ochre/60 hover:text-ochre"
               >
                 {copied ? ui.copiedEmail : ui.copyEmail}
+              </button>
+              <button
+                type="button"
+                onClick={copyNumber}
+                className="min-h-11 rounded-full border border-line px-3.5 py-2 text-[0.62rem] font-semibold uppercase tracking-[0.14em] text-soft transition-colors hover:border-ochre/60 hover:text-ochre"
+              >
+                {copiedNumber ? ui.copiedNumber : ui.copyNumber}
               </button>
               <a
                 href={site.github}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-[0.62rem] font-semibold uppercase tracking-[0.14em] text-faint transition-colors hover:text-white"
+                className="flex items-center justify-center text-[0.62rem] font-semibold uppercase tracking-[0.14em] text-faint transition-colors hover:text-fg sm:justify-start"
               >
                 {site.githubHandle} ↗
               </a>
@@ -222,6 +301,7 @@ export default function Contact() {
                 id="contacto-message"
                 name="message"
                 rows="5"
+                maxLength={MESSAGE_MAX}
                 value={values.message}
                 onChange={handleChange}
                 aria-invalid={errors.message ? 'true' : undefined}
@@ -234,12 +314,22 @@ export default function Contact() {
                   {errors.message}
                 </p>
               )}
+              {!errors.message && MESSAGE_MAX - values.message.length <= 120 && (
+                <p className="mt-2 font-mono text-[0.62rem] tracking-[0.12em] text-faint">
+                  {ui.charsLeft(MESSAGE_MAX - values.message.length)}
+                </p>
+              )}
             </div>
           </div>
 
-          <button type="submit" className="btn btn-primary mt-6 w-full">
-            {ui.prepareEmail}
-          </button>
+          <div className="mt-6 grid gap-3 sm:grid-cols-2">
+            <button type="submit" className="btn btn-primary w-full">
+              {ui.prepareEmail}
+            </button>
+            <button type="button" onClick={handleWhatsapp} className="btn btn-outline w-full">
+              {ui.sendWhatsapp}
+            </button>
+          </div>
 
           <p className="mt-4 text-center text-[0.66rem] leading-relaxed text-faint">
             {ui.formNote}

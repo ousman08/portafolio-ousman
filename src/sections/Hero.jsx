@@ -39,14 +39,14 @@ export default function Hero() {
 
           <h1
             id="hero-title"
-            className="mt-5 text-[clamp(2.9rem,9vw,5.6rem)] font-light leading-[0.9] tracking-[-0.045em] text-white"
+            className="mt-5 text-[clamp(2.9rem,9vw,5.6rem)] font-light leading-[0.9] tracking-[-0.045em] text-fg"
           >
             Ousman
             <br />
             <span className="font-semibold">Krubally</span>
           </h1>
 
-          <p className="mt-5 text-base text-white/90 md:text-lg">
+          <p className="mt-5 text-base text-fg/90 md:text-lg">
             {ui.heroRoleBefore} <span className="font-medium text-ochre">{ui.heroRoleHighlight}</span>
           </p>
 
@@ -79,7 +79,7 @@ export default function Hero() {
             className="absolute -inset-4 rounded-[2rem] bg-[radial-gradient(circle_at_50%_35%,rgba(201,162,75,0.18),transparent_70%)] blur-xl"
           />
 
-          <figure className="relative overflow-hidden rounded-2xl border border-white/15 bg-[#080808]">
+          <figure className="relative overflow-hidden rounded-2xl border border-line-strong bg-surface">
             <img
               src="img/ousman-avatar.webp"
               alt={ui.portraitAlt}

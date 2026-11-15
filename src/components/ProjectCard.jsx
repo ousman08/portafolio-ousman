@@ -30,8 +30,8 @@ export default function ProjectCard({ project, index }) {
   const panelId = useId()
 
   return (
-    <article className="group flex h-full flex-col overflow-hidden rounded-2xl border border-line bg-[#050505] transition-colors duration-300 hover:border-ochre/45">
-      <div className="preview relative aspect-[16/10] overflow-hidden border-b border-line bg-[#0b0b0b]">
+    <article className="group flex h-full flex-col overflow-hidden rounded-2xl border border-line bg-surface transition-colors duration-300 hover:border-ochre/45">
+      <div className="preview relative aspect-[16/10] overflow-hidden border-b border-line bg-surface-2">
         <img
           src={project.preview.src}
           alt={project.preview.alt}
@@ -55,10 +55,10 @@ export default function ProjectCard({ project, index }) {
       <div className="flex flex-1 flex-col p-5">
         <div className="flex items-center justify-between gap-3 font-mono text-[0.58rem] uppercase tracking-[0.16em] text-faint">
           <span>{project.year}</span>
-          <span className="truncate text-right text-ochre/90">{project.status}</span>
+          <span className="truncate text-right text-ochre">{project.status}</span>
         </div>
 
-        <h3 className="mt-3 text-xl font-semibold tracking-tight text-white">
+        <h3 className="mt-3 text-xl font-semibold tracking-tight text-fg">
           {project.links[0] ? (
             <a
               href={project.links[0].href}
@@ -84,7 +84,7 @@ export default function ProjectCard({ project, index }) {
           {project.tech.map((tech) => (
             <li
               key={tech}
-              className="rounded-full border border-line bg-white/[0.03] px-2.5 py-1 text-[0.62rem] font-medium tracking-wide text-neutral-300"
+              className="rounded-full border border-line bg-fg/[0.03] px-2.5 py-1 text-[0.62rem] font-medium tracking-wide text-soft"
             >
               {tech}
             </li>
@@ -95,8 +95,8 @@ export default function ProjectCard({ project, index }) {
           type="button"
           onClick={() => setOpen((value) => !value)}
           aria-expanded={open}
-          aria-controls={panelId}
-          className="mt-6 flex items-center justify-between gap-3 border-t border-line pt-4 text-left text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-white transition-colors hover:text-ochre"
+          aria-controls={open ? panelId : undefined}
+          className="mt-6 flex items-center justify-between gap-3 border-t border-line pt-4 text-left text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-fg transition-colors hover:text-ochre"
         >
           {open ? ui.closeCase : ui.openCase}
           <span
@@ -116,7 +116,7 @@ export default function ProjectCard({ project, index }) {
           id={panelId}
           role="region"
           aria-label={ui.caseAria(project.name)}
-          className="border-t border-line bg-white/[0.02] px-5 py-6"
+          className="border-t border-line bg-fg/[0.02] px-5 py-6"
         >
           <dl className="space-y-5">
             <div>
@@ -132,7 +132,7 @@ export default function ProjectCard({ project, index }) {
           <p className="label mt-6">{ui.decisions}</p>
           <ul className="mt-2 space-y-2">
             {project.highlights.map((item) => (
-              <li key={item} className="flex gap-2.5 text-sm leading-relaxed text-neutral-300">
+              <li key={item} className="flex gap-2.5 text-sm leading-relaxed text-soft">
                 <span aria-hidden="true" className="mt-2 h-px w-3 flex-none bg-ochre" />
                 {item}
               </li>
@@ -143,7 +143,7 @@ export default function ProjectCard({ project, index }) {
           <ul className="mt-2 space-y-2">
             {project.pending.map((item) => (
               <li key={item} className="flex gap-2.5 text-sm leading-relaxed text-faint">
-                <span aria-hidden="true" className="mt-2 h-px w-3 flex-none bg-white/25" />
+                <span aria-hidden="true" className="mt-2 h-px w-3 flex-none bg-fg/25" />
                 {item}
               </li>
             ))}

@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import Emblem from './Emblem.jsx'
 import LanguageToggle from './LanguageToggle.jsx'
+import ThemeToggle from './ThemeToggle.jsx'
 import { useI18n } from '../i18n/LanguageProvider.jsx'
 
 /**
@@ -94,12 +95,12 @@ export default function Navbar() {
 
   return (
     <>
-      <header className="fixed inset-x-0 top-0 z-50 border-b border-line bg-black/80 backdrop-blur-md">
+      <header className="fixed inset-x-0 top-0 z-50 border-b border-line bg-bg/80 backdrop-blur-md">
         <div className="shell flex h-16 items-center justify-between gap-4">
           <a
             href="#inicio"
             onClick={close}
-            className="flex items-center gap-2.5 rounded-sm text-white transition-colors hover:text-ochre"
+            className="flex items-center gap-2.5 rounded-sm text-fg transition-colors hover:text-ochre"
           >
             <Emblem size={27} />
             <span className="text-[0.7rem] font-semibold uppercase tracking-[0.22em]">
@@ -113,7 +114,7 @@ export default function Navbar() {
                 key={item.href}
                 href={item.href}
                 aria-current={active === item.href ? 'true' : undefined}
-                className={`text-[0.68rem] font-medium uppercase tracking-[0.18em] transition-colors hover:text-white ${
+                className={`text-[0.68rem] font-medium uppercase tracking-[0.18em] transition-colors hover:text-fg ${
                   active === item.href ? 'text-ochre' : 'text-muted'
                 }`}
               >
@@ -123,7 +124,10 @@ export default function Navbar() {
           </nav>
 
           <div className="hidden items-center gap-6 lg:flex">
-            <LanguageToggle />
+            <div className="flex items-center gap-4">
+              <LanguageToggle />
+              <ThemeToggle />
+            </div>
             <a href="#contacto" className="btn btn-primary">
               {ui.talk}
             </a>
@@ -136,7 +140,7 @@ export default function Navbar() {
             aria-expanded={open}
             aria-controls={open ? 'menu-movil' : undefined}
             aria-label={open ? ui.closeMenu : ui.openMenu}
-            className="relative -mr-2 flex h-11 w-11 items-center justify-center rounded-full text-white transition-colors hover:text-ochre lg:hidden"
+            className="relative -mr-2 flex h-11 w-11 items-center justify-center rounded-full text-fg transition-colors hover:text-ochre lg:hidden"
           >
             <span className="sr-only">{ui.menu}</span>
             <span
@@ -162,7 +166,7 @@ export default function Navbar() {
           role="dialog"
           aria-modal="true"
           aria-label={ui.menuDialogAria}
-          className="fixed inset-x-0 bottom-0 top-16 z-40 overflow-y-auto border-t border-line bg-black lg:hidden"
+          className="fixed inset-x-0 bottom-0 top-16 z-40 overflow-y-auto border-t border-line bg-bg lg:hidden"
         >
           <nav aria-label={ui.mobileNavAria} className="shell flex min-h-full flex-col py-10">
             <ul className="divide-y divide-line">
@@ -171,7 +175,7 @@ export default function Navbar() {
                   <a
                     href={item.href}
                     onClick={close}
-                    className="flex items-baseline justify-between py-4 text-2xl font-light tracking-tight text-white transition-colors hover:text-ochre"
+                    className="flex items-baseline justify-between py-4 text-2xl font-light tracking-tight text-fg transition-colors hover:text-ochre"
                   >
                     {item.label}
                     <span className="font-mono text-[0.6rem] tracking-[0.2em] text-faint">
@@ -188,22 +192,31 @@ export default function Navbar() {
               </a>
               <a
                 href={`mailto:${site.email}`}
-                className="block break-all text-sm text-muted transition-colors hover:text-white"
+                className="block break-all text-sm text-muted transition-colors hover:text-fg"
               >
                 {site.email}
+              </a>
+              <a
+                href={site.whatsapp.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block text-sm text-muted transition-colors hover:text-fg"
+              >
+                {site.whatsapp.display}
               </a>
               <a
                 href={site.github}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="block text-sm text-muted transition-colors hover:text-white"
+                className="block text-sm text-muted transition-colors hover:text-fg"
               >
                 {site.githubHandle}
               </a>
             </div>
 
-            <div className="mt-8">
+            <div className="mt-8 flex items-center gap-5">
               <LanguageToggle />
+              <ThemeToggle />
             </div>
 
             <p className="mt-auto flex items-center gap-2 pt-10 text-[0.68rem] uppercase tracking-[0.18em] text-muted">

@@ -1,4 +1,4 @@
-import { SITE } from '../data/site.js'
+import { useI18n } from '../i18n/LanguageProvider.jsx'
 
 function ArrowDown() {
   return (
@@ -19,6 +19,8 @@ function ArrowDown() {
 }
 
 export default function Hero() {
+  const { site, ui } = useI18n()
+
   return (
     <section
       id="inicio"
@@ -33,7 +35,7 @@ export default function Hero() {
 
       <div className="shell grid items-center gap-12 py-16 md:py-24 lg:grid-cols-[1.15fr_0.85fr] lg:gap-16">
         <div className="relative">
-          <p className="label">Portafolio · 2026</p>
+          <p className="label">{ui.heroLabel}</p>
 
           <h1
             id="hero-title"
@@ -45,22 +47,20 @@ export default function Hero() {
           </h1>
 
           <p className="mt-5 text-base text-white/90 md:text-lg">
-            Desarrollador <span className="font-medium text-ochre">Full Stack</span>
+            {ui.heroRoleBefore} <span className="font-medium text-ochre">{ui.heroRoleHighlight}</span>
           </p>
 
           <p className="mt-6 max-w-xl text-sm leading-relaxed text-muted md:text-base">
-            Construyo webs de negocio y productos que la gente usa de verdad: catálogos, carritos y
-            pedidos. React, Next.js y Node.js, con el detalle puesto en el rendimiento y la
-            accesibilidad.
+            {ui.heroIntro}
           </p>
 
           <div className="mt-8 flex flex-wrap items-center gap-3">
             <a href="#proyectos" className="btn btn-primary">
-              Ver proyectos
+              {ui.seeProjects}
               <ArrowDown />
             </a>
             <a href="#contacto" className="btn btn-outline">
-              Hablemos
+              {ui.talk}
             </a>
           </div>
 
@@ -69,7 +69,7 @@ export default function Hero() {
               aria-hidden="true"
               className="h-2 w-2 animate-pulse rounded-full bg-emerald-400 shadow-[0_0_0_4px_rgba(52,211,153,0.12)]"
             />
-            {SITE.availability}
+            {site.availability}
           </p>
         </div>
 
@@ -82,7 +82,7 @@ export default function Hero() {
           <figure className="relative overflow-hidden rounded-2xl border border-white/15 bg-[#080808]">
             <img
               src="img/ousman-avatar.webp"
-              alt="Retrato en blanco y negro de Ousman Krubally"
+              alt={ui.portraitAlt}
               width="256"
               height="256"
               fetchPriority="high"
@@ -96,12 +96,12 @@ export default function Hero() {
             <figcaption className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-4">
               <div>
                 <p className="font-mono text-[0.55rem] uppercase tracking-[0.22em] text-white/55">
-                  Retrato
+                  {ui.portrait}
                 </p>
-                <p className="mt-1 text-sm font-medium text-white">{SITE.name}</p>
+                <p className="mt-1 text-sm font-medium text-white">{site.name}</p>
               </div>
               <span className="font-mono text-[0.55rem] uppercase tracking-[0.2em] text-white/55 [writing-mode:vertical-rl]">
-                Portafolio · MMXXVI
+                {ui.portfolioRoman}
               </span>
             </figcaption>
           </figure>

@@ -1,7 +1,8 @@
 import Emblem from './Emblem.jsx'
-import { SITE } from '../data/site.js'
+import { useI18n } from '../i18n/LanguageProvider.jsx'
 
 export default function Footer() {
+  const { site, ui } = useI18n()
   const year = new Date().getFullYear()
 
   return (
@@ -12,13 +13,13 @@ export default function Footer() {
             <Emblem size={26} />
           </span>
           <p className="text-sm text-muted">
-            <span className="text-white">{SITE.name}</span> · {SITE.role}
+            <span className="text-white">{site.name}</span> · {site.role}
           </p>
         </div>
 
-        <nav aria-label="Enlaces del pie" className="flex flex-wrap items-center gap-x-6 gap-y-2">
+        <nav aria-label={ui.footerNavAria} className="flex flex-wrap items-center gap-x-6 gap-y-2">
           <a
-            href={SITE.github}
+            href={site.github}
             target="_blank"
             rel="noopener noreferrer"
             className="text-[0.68rem] uppercase tracking-[0.14em] text-muted transition-colors hover:text-white"
@@ -26,21 +27,21 @@ export default function Footer() {
             GitHub
           </a>
           <a
-            href={`mailto:${SITE.email}`}
+            href={`mailto:${site.email}`}
             className="text-[0.68rem] uppercase tracking-[0.14em] text-muted transition-colors hover:text-white"
           >
-            Correo
+            {ui.footerEmail}
           </a>
           <a
             href="#inicio"
             className="text-[0.68rem] uppercase tracking-[0.14em] text-muted transition-colors hover:text-white"
           >
-            Volver arriba ↑
+            {ui.backToTop}
           </a>
         </nav>
 
         <p className="font-mono text-[0.58rem] uppercase tracking-[0.16em] text-faint">
-          © {year} · Sin cookies ni analítica
+          {ui.footerNote(year)}
         </p>
       </div>
     </footer>

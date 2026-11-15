@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import Emblem from './Emblem.jsx'
-import { NAV, SITE } from '../data/site.js'
+import LanguageToggle from './LanguageToggle.jsx'
+import { useI18n } from '../i18n/LanguageProvider.jsx'
 
 /**
  * Cabecera fija y menú móvil accesible:
@@ -10,6 +11,7 @@ import { NAV, SITE } from '../data/site.js'
  * - el fondo no hace scroll y `main` queda `inert`.
  */
 export default function Navbar() {
+  const { nav, site, ui } = useI18n()
   const [open, setOpen] = useState(false)
   const [active, setActive] = useState('')
   const toggleRef = useRef(null)
@@ -17,7 +19,7 @@ export default function Navbar() {
 
   // Resalta la sección visible en el menú de escritorio.
   useEffect(() => {
-    const sections = NAV.map((item) => document.querySelector(item.href)).filter(Boolean)
+    const sections = nav.map((item) => document.querySelector(item.href)).filter(Boolean)
     if (!sections.length) return
 
     const observer = new IntersectionObserver(
@@ -31,7 +33,7 @@ export default function Navbar() {
 
     sections.forEach((section) => observer.observe(section))
     return () => observer.disconnect()
-  }, [])
+  }, [nav])
 
   useEffect(() => {
     if (!open) return
@@ -105,8 +107,8 @@ export default function Navbar() {
             </span>
           </a>
 
-          <nav aria-label="Navegación principal" className="hidden items-center gap-8 lg:flex">
-            {NAV.map((item) => (
+          <nav aria-label={ui.mainNavAria} className="hidden items-center gap-8 lg:flex">
+            {nav.map((item) => (
               <a
                 key={item.href}
                 href={item.href}
@@ -120,9 +122,12 @@ export default function Navbar() {
             ))}
           </nav>
 
-          <a href="#contacto" className="btn btn-primary hidden lg:inline-flex">
-            Hablemos
-          </a>
+          <div className="hidden items-center gap-6 lg:flex">
+            <LanguageToggle />
+            <a href="#contacto" className="btn btn-primary">
+              {ui.talk}
+            </a>
+          </div>
 
           <button
             ref={toggleRef}
@@ -130,10 +135,10 @@ export default function Navbar() {
             onClick={() => setOpen((value) => !value)}
             aria-expanded={open}
             aria-controls={open ? 'menu-movil' : undefined}
-            aria-label={open ? 'Cerrar menú' : 'Abrir menú'}
+            aria-label={open ? ui.closeMenu : ui.openMenu}
             className="relative -mr-2 flex h-11 w-11 items-center justify-center rounded-full text-white transition-colors hover:text-ochre lg:hidden"
           >
-            <span className="sr-only">Menú</span>
+            <span className="sr-only">{ui.menu}</span>
             <span
               aria-hidden="true"
               className={`absolute h-px w-5 bg-current transition-transform duration-300 ${
@@ -156,12 +161,12 @@ export default function Navbar() {
           ref={panelRef}
           role="dialog"
           aria-modal="true"
-          aria-label="Menú de navegación"
+          aria-label={ui.menuDialogAria}
           className="fixed inset-x-0 bottom-0 top-16 z-40 overflow-y-auto border-t border-line bg-black lg:hidden"
         >
-          <nav aria-label="Navegación móvil" className="shell flex min-h-full flex-col py-10">
+          <nav aria-label={ui.mobileNavAria} className="shell flex min-h-full flex-col py-10">
             <ul className="divide-y divide-line">
-              {NAV.map((item, index) => (
+              {nav.map((item, index) => (
                 <li key={item.href}>
                   <a
                     href={item.href}
@@ -179,27 +184,31 @@ export default function Navbar() {
 
             <div className="mt-10 space-y-4">
               <a href="#contacto" onClick={close} className="btn btn-primary w-full">
-                Hablemos
+                {ui.talk}
               </a>
               <a
-                href={`mailto:${SITE.email}`}
+                href={`mailto:${site.email}`}
                 className="block break-all text-sm text-muted transition-colors hover:text-white"
               >
-                {SITE.email}
+                {site.email}
               </a>
               <a
-                href={SITE.github}
+                href={site.github}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="block text-sm text-muted transition-colors hover:text-white"
               >
-                {SITE.githubHandle}
+                {site.githubHandle}
               </a>
+            </div>
+
+            <div className="mt-8">
+              <LanguageToggle />
             </div>
 
             <p className="mt-auto flex items-center gap-2 pt-10 text-[0.68rem] uppercase tracking-[0.18em] text-muted">
               <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
-              {SITE.availability}
+              {site.availability}
             </p>
           </nav>
         </div>

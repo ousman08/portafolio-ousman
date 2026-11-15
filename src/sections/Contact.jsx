@@ -1,22 +1,22 @@
 import { useEffect, useRef, useState } from 'react'
-import { SITE } from '../data/site.js'
+import { useI18n } from '../i18n/LanguageProvider.jsx'
 
 const EMPTY_FORM = { name: '', email: '', message: '' }
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/
 
-function validate(values) {
+function validate(values, ui) {
   const errors = {}
 
   if (values.name.trim().length < 2) {
-    errors.name = 'Escribe tu nombre (mínimo 2 caracteres).'
+    errors.name = ui.errorName
   }
 
   if (!EMAIL_PATTERN.test(values.email.trim())) {
-    errors.email = 'Escribe un correo válido, por ejemplo nombre@dominio.com.'
+    errors.email = ui.errorEmail
   }
 
   if (values.message.trim().length < 10) {
-    errors.message = 'Cuéntame algo más: al menos 10 caracteres.'
+    errors.message = ui.errorMessage
   }
 
   return errors
@@ -27,6 +27,7 @@ function validate(values) {
  * Nada se envía a un servidor ni se guarda.
  */
 export default function Contact() {
+  const { lang, site, ui } = useI18n()
   const [values, setValues] = useState(EMPTY_FORM)
   const [errors, setErrors] = useState({})
   const [status, setStatus] = useState('')
@@ -34,6 +35,12 @@ export default function Contact() {
   const copyTimer = useRef(null)
 
   useEffect(() => () => clearTimeout(copyTimer.current), [])
+
+  // Los mensajes ya mostrados no deben quedarse en el idioma anterior.
+  useEffect(() => {
+    setErrors({})
+    setStatus('')
+  }, [lang])
 
   function handleChange(event) {
     const { name, value } = event.target
@@ -49,37 +56,37 @@ export default function Contact() {
 
   function handleSubmit(event) {
     event.preventDefault()
-    const nextErrors = validate(values)
+    const nextErrors = validate(values, ui)
     setErrors(nextErrors)
 
     const firstError = Object.keys(nextErrors)[0]
     if (firstError) {
       document.getElementById(`contacto-${firstError}`)?.focus()
-      setStatus('Revisa los campos marcados antes de continuar.')
+      setStatus(ui.statusReview)
       return
     }
 
-    const subject = `Contacto desde el portafolio — ${values.name.trim()}`
+    const subject = ui.mailSubject(values.name.trim())
     const body = [
-      `Nombre: ${values.name.trim()}`,
-      `Correo: ${values.email.trim()}`,
+      `${ui.mailName} ${values.name.trim()}`,
+      `${ui.mailEmail} ${values.email.trim()}`,
       '',
       values.message.trim(),
     ].join('\n')
 
-    setStatus('Abriendo tu cliente de correo con el mensaje preparado…')
-    window.location.href = `mailto:${SITE.email}?subject=${encodeURIComponent(
+    setStatus(ui.statusOpening)
+    window.location.href = `mailto:${site.email}?subject=${encodeURIComponent(
       subject,
     )}&body=${encodeURIComponent(body)}`
   }
 
   async function copyEmail() {
     try {
-      await navigator.clipboard.writeText(SITE.email)
+      await navigator.clipboard.writeText(site.email)
       setCopied(true)
     } catch {
       setCopied(false)
-      setStatus(`No se pudo copiar. El correo es ${SITE.email}.`)
+      setStatus(ui.statusCopyFailed(site.email))
       return
     }
 
@@ -98,19 +105,18 @@ export default function Contact() {
     >
       <div className="shell grid gap-12 lg:grid-cols-[1fr_1fr] lg:gap-20">
         <div>
-          <p className="label">04 — Contacto</p>
+          <p className="label">{ui.contactLabel}</p>
           <h2
             id="contacto-title"
             className="mt-4 text-3xl font-semibold leading-[1.05] tracking-tight text-white md:text-5xl"
           >
-            ¿Construimos
+            {ui.contactTitleBefore}
             <br />
-            algo?
+            {ui.contactTitleAfter}
           </h2>
 
           <p className="mt-6 max-w-md text-sm leading-relaxed text-muted md:text-base">
-            Si tienes un negocio que necesita una web, un proyecto que encarrilar o una vacante
-            junior donde encaje, escríbeme. Leo todo y contesto.
+            {ui.contactIntro}
           </p>
 
           <p className="mt-6 flex items-center gap-2.5 text-[0.7rem] uppercase tracking-[0.16em] text-muted">
@@ -118,18 +124,18 @@ export default function Contact() {
               aria-hidden="true"
               className="h-2 w-2 animate-pulse rounded-full bg-emerald-400 shadow-[0_0_0_4px_rgba(52,211,153,0.12)]"
             />
-            {SITE.availability}
+            {site.availability}
           </p>
 
           <div className="mt-8 rounded-2xl border border-line bg-[#050505] p-5">
             <p className="font-mono text-[0.56rem] uppercase tracking-[0.2em] text-faint">
-              Correo directo
+              {ui.directEmail}
             </p>
             <a
-              href={`mailto:${SITE.email}`}
+              href={`mailto:${site.email}`}
               className="mt-2 block break-all text-lg font-medium text-white transition-colors hover:text-ochre"
             >
-              {SITE.email}
+              {site.email}
             </a>
             <div className="mt-4 flex flex-wrap items-center gap-3">
               <button
@@ -137,15 +143,15 @@ export default function Contact() {
                 onClick={copyEmail}
                 className="min-h-11 rounded-full border border-line px-3.5 py-2 text-[0.62rem] font-semibold uppercase tracking-[0.14em] text-neutral-300 transition-colors hover:border-ochre/60 hover:text-ochre"
               >
-                {copied ? 'Copiado ✓' : 'Copiar correo'}
+                {copied ? ui.copiedEmail : ui.copyEmail}
               </button>
               <a
-                href={SITE.github}
+                href={site.github}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-[0.62rem] font-semibold uppercase tracking-[0.14em] text-faint transition-colors hover:text-white"
               >
-                {SITE.githubHandle} ↗
+                {site.githubHandle} ↗
               </a>
             </div>
           </div>
@@ -158,7 +164,7 @@ export default function Contact() {
                 htmlFor="contacto-name"
                 className="mb-2 block font-mono text-[0.58rem] uppercase tracking-[0.18em] text-muted"
               >
-                Nombre
+                {ui.formName}
               </label>
               <input
                 id="contacto-name"
@@ -170,7 +176,7 @@ export default function Contact() {
                 aria-invalid={errors.name ? 'true' : undefined}
                 aria-describedby={errors.name ? 'contacto-name-error' : undefined}
                 className={fieldClass}
-                placeholder="Tu nombre"
+                placeholder={ui.namePlaceholder}
               />
               {errors.name && (
                 <p id="contacto-name-error" className="mt-2 text-xs text-red-300">
@@ -184,7 +190,7 @@ export default function Contact() {
                 htmlFor="contacto-email"
                 className="mb-2 block font-mono text-[0.58rem] uppercase tracking-[0.18em] text-muted"
               >
-                Correo
+                {ui.formEmail}
               </label>
               <input
                 id="contacto-email"
@@ -196,7 +202,7 @@ export default function Contact() {
                 aria-invalid={errors.email ? 'true' : undefined}
                 aria-describedby={errors.email ? 'contacto-email-error' : undefined}
                 className={fieldClass}
-                placeholder="nombre@dominio.com"
+                placeholder={ui.emailPlaceholder}
               />
               {errors.email && (
                 <p id="contacto-email-error" className="mt-2 text-xs text-red-300">
@@ -210,7 +216,7 @@ export default function Contact() {
                 htmlFor="contacto-message"
                 className="mb-2 block font-mono text-[0.58rem] uppercase tracking-[0.18em] text-muted"
               >
-                Mensaje
+                {ui.formMessage}
               </label>
               <textarea
                 id="contacto-message"
@@ -221,7 +227,7 @@ export default function Contact() {
                 aria-invalid={errors.message ? 'true' : undefined}
                 aria-describedby={errors.message ? 'contacto-message-error' : undefined}
                 className={`${fieldClass} resize-y`}
-                placeholder="Qué necesitas, para cuándo y con qué presupuesto cuentas."
+                placeholder={ui.messagePlaceholder}
               />
               {errors.message && (
                 <p id="contacto-message-error" className="mt-2 text-xs text-red-300">
@@ -232,12 +238,11 @@ export default function Contact() {
           </div>
 
           <button type="submit" className="btn btn-primary mt-6 w-full">
-            Preparar correo
+            {ui.prepareEmail}
           </button>
 
           <p className="mt-4 text-center text-[0.66rem] leading-relaxed text-faint">
-            Este formulario no envía datos a ningún servidor: abre tu cliente de correo con el
-            mensaje listo para revisar.
+            {ui.formNote}
           </p>
 
           <p aria-live="polite" className="mt-3 min-h-5 text-center text-xs text-ochre">

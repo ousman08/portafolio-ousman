@@ -1,4 +1,5 @@
 import { useId, useState } from 'react'
+import { useI18n } from '../i18n/LanguageProvider.jsx'
 
 function ExternalArrow() {
   return (
@@ -24,6 +25,7 @@ function ExternalArrow() {
  * El caso técnico se despliega en la propia tarjeta, sin cambiar de página.
  */
 export default function ProjectCard({ project, index }) {
+  const { ui } = useI18n()
   const [open, setOpen] = useState(false)
   const panelId = useId()
 
@@ -40,7 +42,7 @@ export default function ProjectCard({ project, index }) {
           style={{ '--pan': project.preview.pan }}
         />
         <span className="absolute left-3 top-3 rounded-full border border-white/15 bg-black/70 px-2.5 py-1 font-mono text-[0.55rem] uppercase tracking-[0.18em] text-white/70 backdrop-blur-sm">
-          Página completa
+          {ui.fullPage}
         </span>
         <span
           aria-hidden="true"
@@ -78,7 +80,7 @@ export default function ProjectCard({ project, index }) {
 
         <p className="mt-4 text-sm leading-relaxed text-muted">{project.summary}</p>
 
-        <ul className="mt-5 flex flex-wrap gap-1.5" aria-label="Tecnologías">
+        <ul className="mt-5 flex flex-wrap gap-1.5" aria-label={ui.technologies}>
           {project.tech.map((tech) => (
             <li
               key={tech}
@@ -96,7 +98,7 @@ export default function ProjectCard({ project, index }) {
           aria-controls={panelId}
           className="mt-6 flex items-center justify-between gap-3 border-t border-line pt-4 text-left text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-white transition-colors hover:text-ochre"
         >
-          {open ? 'Cerrar caso técnico' : 'Ver caso técnico'}
+          {open ? ui.closeCase : ui.openCase}
           <span
             aria-hidden="true"
             className={`relative h-3 w-3 text-ochre transition-transform duration-300 ${
@@ -113,21 +115,21 @@ export default function ProjectCard({ project, index }) {
         <div
           id={panelId}
           role="region"
-          aria-label={`Caso técnico de ${project.name}`}
+          aria-label={ui.caseAria(project.name)}
           className="border-t border-line bg-white/[0.02] px-5 py-6"
         >
           <dl className="space-y-5">
             <div>
-              <dt className="label">Problema</dt>
+              <dt className="label">{ui.problem}</dt>
               <dd className="mt-2 text-sm leading-relaxed text-muted">{project.problem}</dd>
             </div>
             <div>
-              <dt className="label">Solución</dt>
+              <dt className="label">{ui.solution}</dt>
               <dd className="mt-2 text-sm leading-relaxed text-muted">{project.solution}</dd>
             </div>
           </dl>
 
-          <p className="label mt-6">Decisiones</p>
+          <p className="label mt-6">{ui.decisions}</p>
           <ul className="mt-2 space-y-2">
             {project.highlights.map((item) => (
               <li key={item} className="flex gap-2.5 text-sm leading-relaxed text-neutral-300">
@@ -137,7 +139,7 @@ export default function ProjectCard({ project, index }) {
             ))}
           </ul>
 
-          <p className="label mt-6 text-faint">Pendiente</p>
+          <p className="label mt-6 text-faint">{ui.pending}</p>
           <ul className="mt-2 space-y-2">
             {project.pending.map((item) => (
               <li key={item} className="flex gap-2.5 text-sm leading-relaxed text-faint">

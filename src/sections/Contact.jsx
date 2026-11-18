@@ -98,14 +98,17 @@ export default function Contact() {
       values.message.trim(),
     ].join('\n')
 
+    // Gmail en el navegador: funciona sin tener un programa de correo instalado.
+    const gmail = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(
+      site.email,
+    )}&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
+
     setStatus(ui.statusOpening)
-    window.location.href = `mailto:${site.email}?subject=${encodeURIComponent(
-      subject,
-    )}&body=${encodeURIComponent(body)}`
+    window.open(gmail, '_blank', 'noopener,noreferrer')
   }
 
   /** Preparar el mismo mensaje en WhatsApp: sin backend, solo un deep link. */
-  function handleWhatsapp() {
+  function openWhatsapp(web = false) {
     const email = values.email.trim()
     const nextErrors = validate(values, ui, { requireEmail: false })
     setErrors(nextErrors)
@@ -113,12 +116,13 @@ export default function Contact() {
     if (focusFirstError(nextErrors)) return
 
     const text = ui.whatsappMessage(values.name.trim(), email, values.message.trim())
+    // En ordenador, el enlace directo a la web evita que se intente abrir la app.
+    const url = web
+      ? `https://web.whatsapp.com/send?phone=${site.whatsapp.number}&text=${encodeURIComponent(text)}`
+      : `${site.whatsapp.href}?text=${encodeURIComponent(text)}`
+
     setStatus(ui.statusWhatsapp)
-    window.open(
-      `${site.whatsapp.href}?text=${encodeURIComponent(text)}`,
-      '_blank',
-      'noopener,noreferrer',
-    )
+    window.open(url, '_blank', 'noopener,noreferrer')
   }
 
   async function copyEmail() {
@@ -326,8 +330,15 @@ export default function Contact() {
             <button type="submit" className="btn btn-primary w-full">
               {ui.prepareEmail}
             </button>
-            <button type="button" onClick={handleWhatsapp} className="btn btn-outline w-full">
+            <button type="button" onClick={() => openWhatsapp()} className="btn btn-outline w-full">
               {ui.sendWhatsapp}
+            </button>
+            <button
+              type="button"
+              onClick={() => openWhatsapp(true)}
+              className="w-full font-mono text-[0.66rem] uppercase tracking-[0.12em] text-muted underline decoration-line underline-offset-4 transition-colors hover:text-ochre sm:col-span-2"
+            >
+              {ui.whatsappWeb}
             </button>
           </div>
 

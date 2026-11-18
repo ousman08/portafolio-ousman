@@ -126,10 +126,12 @@ Peso inicial aproximado (gzip): HTML 1,1 kB · CSS 7,4 kB · JS 78,1 kB · Inter
    - `og:image` y `twitter:image` → `https://TU-DOMINIO/og-image.png`
    - añade `og:url` con la URL canónica y un `<link rel="canonical">`
    - añade `Sitemap:` en `public/robots.txt` y crea `public/sitemap.xml`
-4. Si editas el bloque JSON-LD inline de `index.html`, **recalcula el hash de la CSP**:
+4. Hay **dos hashes inline** en `script-src` de `vercel.json`: el del JSON-LD de `index.html` y el
+   del script que aplica el tema en `404.html`. Si editas cualquiera de los dos bloques, recalcula
+   su hash y sustituye solo el valor correspondiente; si no, el navegador bloqueará el script:
 
 ```bash
-node -e "const fs=require('fs'),c=require('crypto');const m=fs.readFileSync('index.html','utf8').match(/<script type=\"application\/ld\+json\">([\s\S]*?)<\/script>/);console.log('sha256-'+c.createHash('sha256').update(m[1]).digest('base64'))"
+node -e "const fs=require('fs'),c=require('crypto');const h=s=>'sha256-'+c.createHash('sha256').update(s).digest('base64');const ld=fs.readFileSync('index.html','utf8').match(/<script type=\"application\/ld\+json\">([\s\S]*?)<\/script>/);const f=fs.readFileSync('public/404.html','utf8').match(/<script>([\s\S]*?)<\/script>/);console.log('JSON-LD:',h(ld[1]));console.log('404    :',h(f[1]))"
 ```
 
 Sustituye el valor `sha256-…` de `script-src` en `vercel.json`. El sitio no está desplegado en
